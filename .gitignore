@@ -1,4 +1,3 @@
 .idea/*
 *.py[cod]
-static/system/head_picture/*
-static/system/pub_picture/*
+tour/static/system/tour_picture/*
