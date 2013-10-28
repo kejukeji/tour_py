@@ -6,6 +6,7 @@ from .database import Base
 
 TOUR_TABLE = 'tour'
 TOUR_PICTURE_TABLE = 'tour_picture'
+PICTURE_THUMBNAIL_TABLE = 'picture_thumbnail'
 
 
 class Tour(Base):
@@ -88,3 +89,33 @@ class TourPicture(Base):
 
     def __repr__(self):
         return '<TourPicture(tour_id: %s, upload_name: %s)>' % (self.tour_id, self.upload_name)
+
+
+class TourPictureThumbnail(Base):
+    """
+    id
+    picture_id 图片ID
+    picture286_170
+    picture640_288
+    picture300_180
+    picture176_160
+    """
+
+    __tablename__ = PICTURE_THUMBNAIL_TABLE
+
+    id = Column(Integer, primary_key=True)
+    picture_id = Column(Integer, ForeignKey(TourPicture.id, ondelete='cascade', onupdate='cascade'), nullable=False)
+    picture286_170 = Column(String(128), nullable=False)
+    picture640_288 = Column(String(128), nullable=False)
+    picture300_180 = Column(String(128), nullable=False)
+    picture176_160 = Column(String(128), nullable=False)
+
+    def __init__(self, picture_id, picture286, picture640, picture300, picture176):
+        self.picture_id = picture_id
+        self.picture176_160 = picture176
+        self.picture286_170 = picture286
+        self.picture300_180 = picture300
+        self.picture640_288 = picture640
+
+    def __repr__(self):
+        return '<TourPicture(tour_id: %s)>' % self.picture_id

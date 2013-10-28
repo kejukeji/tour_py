@@ -1,7 +1,7 @@
 # coding: utf-8
 
 from flask import render_template
-from ..models import Tour, TourPicture
+from ..models import Tour, TourPicture, TourPictureThumbnail
 from sqlalchemy import desc
 from random import choice
 
@@ -31,15 +31,17 @@ def wrap_picture(tours):
 
     # 传过来是一个实例，添加所有的图片
     if not hasattr(tours, '__iter__'):
-        tours.rel_path = []
+        tours.picture = []
         for picture in TourPicture.query.filter(TourPicture.tour_id == tours.id).all():
-            tours.rel_path.append(picture.rel_path + '/' + picture.pic_name)
+            picture_thumbnail = TourPictureThumbnail.query.filter(TourPictureThumbnail.picture_id == picture.id).first()
+            tours.picture.append(create_picture(picture, picture_thumbnail))
         return tours
 
     # 传过来一个列表，每个元素添加一张图片
     for tour in tours:
         picture = TourPicture.query.filter(TourPicture.tour_id == tour.id).first()
-        tour.rel_path = picture.rel_path + '/' + picture.pic_name
+        picture_thumbnail = TourPictureThumbnail.query.filter(TourPictureThumbnail.picture_id == picture.id).first()
+        tour.picture = create_picture(picture, picture_thumbnail)
 
     return tours
 
@@ -58,3 +60,20 @@ def random_select(tours, number):
             selects.append(select)
 
     return selects
+
+
+class Picture(object):
+    """保存图片信息的类"""
+    def __init__(self, base_path, normal, picture286_170, picture640_288, picture300_180, picture176_160):
+        self.normal = base_path + normal
+        self.picture286_170 = base_path + picture286_170
+        self.picture640_288 = base_path + picture640_288
+        self.picture300_180 = base_path + picture300_180
+        self.picture176_160 = base_path + picture176_160
+
+
+def create_picture(picture, picture_thumbnail):
+    """返回一个Picture的类"""
+    base_path = picture.rel_path + '/'
+    return Picture(base_path, picture.pic_name, picture_thumbnail.picture286_170, picture_thumbnail.picture640_288,
+                   picture_thumbnail.picture300_180, picture_thumbnail.picture176_160)

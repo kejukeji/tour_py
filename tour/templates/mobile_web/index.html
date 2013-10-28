@@ -20,7 +20,7 @@
 		<div class="swipe"  id="slider">
 			<div class="swipe-wrap">
                 {% for banner in banners %}
-                <div><a href="{{ url_for('detail', tour_id=banner.id.__str__()) }}"><img src="{{ banner.rel_path }}" /></a></div>
+                <div><a href="{{ url_for('detail', tour_id=banner.id.__str__()) }}"><img src="{{ banner.picture.picture640_288 }}" /></a></div>
                 {% endfor %}
 			</div>
 		</div>
@@ -39,7 +39,7 @@
 			<li>
 				<a href="{{ url_for('detail', tour_id=tour.id.__str__()) }}">
 					<i class="icon-new"></i>
-					<div class="pic-wrap"><img data-src="{{ tour.rel_path }}" height="85"/></div>
+					<div class="pic-wrap"><img data-src="{{ tour.picture.picture286_170 }}" height="85"/></div>
 					<dl class="tit">
 				         		<dt class="name">{{ tour.title }}</dt>
 				          		<dd class="desc">{{ tour.intro }}</dd>
