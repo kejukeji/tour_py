@@ -8,8 +8,8 @@ from random import choice
 
 def index(page=1):
     """首页视图"""
-    banners = wrap_picture(Tour.query.order_by(desc(Tour.rank)).limit(4).all())
-    tours = wrap_picture(Tour.query.order_by(desc(Tour.rank)).all()[4:])
+    banners = wrap_picture(Tour.query.filter(Tour.stopped == 0).order_by(desc(Tour.rank)).limit(4).all())
+    tours = wrap_picture(Tour.query.filter(Tour.stopped == 0).order_by(desc(Tour.rank)).all())
 
     return render_template('mobile_web/index.html',
                            banners=banners,
