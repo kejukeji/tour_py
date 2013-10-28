@@ -19,10 +19,9 @@
 	<nav>
 		<div class="swipe"  id="slider">
 			<div class="swipe-wrap">
-				<div><a href='#'><img src="../../static/image/role1.jpeg" alt="" /></a></div>
-				<div><a href='#'><img src="../../static/image/role2.jpeg" alt="" /></a></div>
-				<div><a href='#'><img src="../../static/image/role3.jpeg" alt="" /></a></div>
-				<div><a href='#'><img src="../../static/image/role4.jpeg" alt="" /></a></div>
+                {% for banner in banners %}
+                <div><a href="{{ url_for('detail', tour_id=banner.id.__str__()) }}"><img src="{{ banner.rel_path }}" /></a></div>
+                {% endfor %}
 			</div>
 		</div>
 		<div class="slidePosIndicator" id="featuredMobileInd">
@@ -36,88 +35,19 @@
 
 	<section>
 		<ul class="index-list clearfix">
+            {% for tour in tours %}
 			<li>
-				<a href="/detail">
+				<a href="{{ url_for('detail', tour_id=tour.id.__str__()) }}">
 					<i class="icon-new"></i>
-					<div class="pic-wrap"><img data-src="../../static/image/pic1.png" height="85"/></div>
+					<div class="pic-wrap"><img data-src="{{ tour.rel_path }}" height="85"/></div>
 					<dl class="tit">
-				         		<dt class="name">飞利浦剃须刀</dt>
-				          		<dd class="desc">飞利浦剃须刀首次折扣6折，抢啦～</dd>
+				         		<dt class="name">{{ tour.title }}</dt>
+				          		<dd class="desc">{{ tour.intro }}</dd>
 				          </dl>
-				          <p class="price"><em>3999</em>元</p>
+				          <p class="price"><em>{{ tour.price }}</em>元</p>
 				</a>
 			</li>
-			<li>
-				<a href="#">
-					<div class="pic-wrap"><img data-src="../../static/image/pic2.png" height="85"/></div>
-					<dl class="tit">
-				         		<dt class="name">飞利浦剃须刀</dt>
-				          		<dd class="desc">飞利浦剃须刀首次折扣6折，抢啦～</dd>
-				          </dl>
-				          <p class="price"><em>3999</em>元</p>
-				</a>
-			</li>
-			<li>
-				<a href="#">
-					<div class="pic-wrap"><img data-src="../../static/image/pic3.jpg" height="85" /></div>
-					<dl class="tit">
-				         		<dt class="name">飞利浦剃须刀</dt>
-				          		<dd class="desc">飞利浦剃须刀首次折扣6折，抢啦～</dd>
-				          </dl>
-				          <p class="price"><em>3999</em>元</p>
-				</a>
-			</li>
-			<li>
-				<a href="#">
-					<i class="icon-new"></i>
-					<div class="pic-wrap"><img data-src="../../static/image/pic2.png" height="85"/></div>
-					<dl class="tit">
-				         		<dt class="name">飞利浦剃须刀</dt>
-				          		<dd class="desc">飞利浦剃须刀首次折扣6折，抢啦～</dd>
-				          </dl>
-				          <p class="price"><em>3999</em>元</p>
-				</a>
-			</li>
-			<li>
-				<a href="#">
-					<div class="pic-wrap"><img data-src="../../static/image/pic3.jpg" height="85" /></div>
-					<dl class="tit">
-				         		<dt class="name">飞利浦剃须刀</dt>
-				          		<dd class="desc">飞利浦剃须刀首次折扣6折，抢啦～</dd>
-				          </dl>
-				          <p class="price"><em>3999</em>元</p>
-				</a>
-			</li>
-			<li>
-				<a href="#">
-					<div class="pic-wrap"><img data-src="../../static/image/pic1.png" height="85"/></div>
-					<dl class="tit">
-				         		<dt class="name">飞利浦剃须刀</dt>
-				          		<dd class="desc">飞利浦剃须刀首次折扣6折，抢啦～</dd>
-				          </dl>
-				          <p class="price"><em>3999</em>元</p>
-				</a>
-			</li>
-			<li>
-				<a href="#">
-					<div class="pic-wrap"><img data-src="../../static/image/pic3.jpg" height="85" /></div>
-					<dl class="tit">
-				         		<dt class="name">飞利浦剃须刀</dt>
-				          		<dd class="desc">飞利浦剃须刀首次折扣6折，抢啦～</dd>
-				          </dl>
-				          <p class="price"><em>3999</em>元</p>
-				</a>
-			</li>
-			<li>
-				<a href="#">
-					<div class="pic-wrap"><img data-src="../../static/image/pic4.jpg" height="85"/></div>
-					<dl class="tit">
-				         		<dt class="name">飞利浦剃须刀</dt>
-				          		<dd class="desc">飞利浦剃须刀首次折扣6折，抢啦～</dd>
-				          </dl>
-				          <p class="price"><em>3999</em>元</p>
-				</a>
-			</li>
+            {% endfor %}
 		</ul>
 	</section>
 	<script type="text/javascript" src="../../static/js/zepto.min.js"></script>

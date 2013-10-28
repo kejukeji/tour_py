@@ -166,7 +166,7 @@ class TourPictureFile(FileAdmin):  # todo-lyw代码进一步完善中
 
         return self.render(self.upload_template, form=form)
 
-    @expose('/delete/', methods=('POST',))
+    @expose('/delete/', methods=('POST',))  # todo-lyw 这个是删除一张图片的，集体删除的图片函数需要添加
     def delete(self):
         """
             Delete view method

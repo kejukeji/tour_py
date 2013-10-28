@@ -39,7 +39,7 @@ class TourView(ModelView):
     column_descriptions = dict(
         order_max=u'最大订购人数，如果没有限制，可以不写',
         ordered=u'已订购人数，系统自动添加',
-        rank=u'排序，值越大，可以约靠前',
+        rank=u'排序，值越大，可以约靠前，最前面四个作为广告放在最前面',
         stopped=u'如果这个订购取消，可以勾选'
     )
     column_list = ('title', 'price', 'order_max', 'ordered', 'stopped', 'rank')

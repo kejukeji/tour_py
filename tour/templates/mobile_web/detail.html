@@ -14,16 +14,16 @@
 	<header>
 		折扣详情
 		<a href="javascript:void(0);" class="icon-back" onclick="history.back();"></a>
-		<a class="icon-share" href="javascript:void(0)" id="J-share"></a>
+		<!--<a class="icon-share" href="javascript:void(0)" id="J-share"></a>-->
 	</header>
 
 	<section class="detail-wrap">
 		<div class="deal-intro">
-			<h3>折扣大标题</h3>
+			<h3>{{ tour.title }}</h3>
 			<div class="deal-stat">
-				<img src="../../static/image/detail.jpg" width="150" height="90" />
+				<img src={{ tour.rel_path[0] }} width="150" height="90" />
 				<div class="deal-stat-cont">
-					<p class="deal-price-num"><em>3999</em>元/一个人</p>
+					<p class="deal-price-num"><em>{{ tour.price }}</em>元/一个人</p>
 					<a href="#" class="btn btn-large btn-oran">立即购买</a>
 					<!-- <a href="#" class="btn btn-large btn-gray">已售罄</a> -->
 				</div>
@@ -32,35 +32,39 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">折扣简介</div>
 		        	<div class="panel-body">
-		       		<p class="panel-p">折扣时间：2013年 折扣时间：2013年折扣时间：2013年折扣时间：2013年 文字介绍 文字介绍 文字介绍……</p>
+		       		<p class="panel-p">{{ tour.intro }}</p>
 		        	</div>
 		</div>
 
 		<div class="panel panel-default">
 			<div class="panel-heading">折扣详情</div>
 		        	<div class="panel-body">
-		       		<p class="panel-p">仅售178元！价值278元的爱茜茜里意大利手工冰淇淋8英寸冰淇淋蛋糕4选1。来自亚平宁半岛西西里岛，享誉欧洲400年，更低脂肪,更低热量，这个冬天一起享「瘦」甜品，从此不再牺牲美丽~</p>
+		       		<p class="panel-p">{{ tour.detail }}</p>
 		        	</div>
 		</div>
 
 		<div class="panel panel-default">
 			<div class="panel-heading">图片详情
-				<a href="#" class="more">更多</a>
+				<!--<a href="#" class="more">更多</a>-->
 			</div>
 		        	<div class="panel-body">
 		        		<ul class="pic-list">
-		        			<li><img src="../../static/image/micro.png" width="100%" height="100%" /></li>
-		        			<li><img src="../../static/image/micro.png" width="100%" height="100%" /></li>
-		        			<li><img src="../../static/image/micro.png" width="100%" height="100%" /></li>
+                            {% for picture in tour.rel_path%}
+                            <li><a href={{ picture }}><img src={{ picture }} width="100%" height="100%" /></a></li>
+                            {% endfor %}
 		        		</ul>
 		        	</div>
 		</div>
 
 		<div class="panel panel-default">
-			<div class="panel-heading">相关折扣<a href="#" class="more">更多</a></div>
+			<div class="panel-heading">相关折扣
+                <!--<a href="#" class="more">更多</a>-->
+            </div>
 		        	<div class="list-group">
-		        		<a href="#" class="list-group-item">泰国一日游/泰国一日游<span class="small-price">（<em>3999</em>元/一个人）</span><i class="i-arrow i-arrow-right"></i></a>
-		        		<a href="#" class="list-group-item">日本一日游/日本一日游<span class="small-price">（<em>3999</em>元/一个人）</span><i class="i-arrow i-arrow-right"></i></a>
+                        {% for relate in relates %}
+                        <a href="{{ url_for('detail', tour_id=relate.id.__str__()) }}" class="list-group-item">{{ relate.title }}<span class="small-price">（<em>{{ relate.price }}</em>元/一个人）</span><i class="i-arrow i-arrow-right"></i></a>
+                        {% endfor %}
+                    </div>
 			</div>
 		</div>
 
