@@ -38,9 +38,9 @@ class TourView(ModelView):
         stopped=u'是否停止本订购'
     )
     column_descriptions = dict(
-        order_max=u'最大订购人数，如果没有限制，可以不写',
-        ordered=u'已订购人数，系统自动添加',
-        rank=u'排序，值越大，可以约靠前，最前面四个作为广告放在最前面',
+        order_max=u'最大订购人数，如果没有限制，默认为0',
+        ordered=u'已订购人数，首先默认为0，然后系统自动添加',
+        rank=u'排序，值越大，可以约靠前，最前面四个作为广告放在最前面，默认为0',
         stopped=u'如果这个订购取消，可以勾选'
     )
     column_list = ('title', 'price', 'order_max', 'ordered', 'stopped', 'rank')
@@ -147,17 +147,21 @@ def save_tour_pictures(tour_id, pictures):
 def delete_tour_picture(tour_id):
     pictures = TourPicture.query.filter(TourPicture.tour_id == tour_id).all()
     for picture in pictures:
-        try:
-            picture_thumbnail = TourPictureThumbnail.query.filter(
-                TourPictureThumbnail.picture_id == picture.id).first()
-            base_path = picture.base_path+picture.rel_path+'/'
-            os.remove(os.path.join(base_path, picture.pic_name))
-            os.remove(os.path.join(base_path, picture_thumbnail.picture286_170))
-            os.remove(os.path.join(base_path, picture_thumbnail.picture640_288))
-            os.remove(os.path.join(base_path, picture_thumbnail.picture300_180))
-            os.remove(os.path.join(base_path, picture_thumbnail.picture176_160))
-        except:
-            pass
+        delete_a_tour_picture(picture)
+
+
+def delete_a_tour_picture(picture):
+    try:
+        picture_thumbnail = TourPictureThumbnail.query.filter(
+            TourPictureThumbnail.picture_id == picture.id).first()
+        base_path = picture.base_path+picture.rel_path+'/'
+        os.remove(os.path.join(base_path, picture.pic_name))
+        os.remove(os.path.join(base_path, picture_thumbnail.picture286_170))
+        os.remove(os.path.join(base_path, picture_thumbnail.picture640_288))
+        os.remove(os.path.join(base_path, picture_thumbnail.picture300_180))
+        os.remove(os.path.join(base_path, picture_thumbnail.picture176_160))
+    except:
+        pass
 
 
 def save_thumbnail(picture_id):

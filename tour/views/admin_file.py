@@ -15,9 +15,10 @@ from flask.ext.admin.base import expose
 from flask.ext.admin.contrib.fileadmin import FileAdmin
 from flask.ext.admin.contrib.fileadmin import UploadForm
 
-from ..models import TourPicture, db
+from ..models import TourPicture, db, TourPictureThumbnail
 from ..utils import allowed_file_extension, time_file_name
 from ..ex_var import TOUR_PICTURE_BASE_PATH, TOUR_PICTURE_UPLOAD_FOLDER, TOUR_PICTURE_ALLOWED_EXTENSION
+from .admin_tour import save_thumbnail
 
 
 class TourPictureFile(FileAdmin):  # todo-lyw代码进一步完善中
@@ -68,6 +69,9 @@ class TourPictureFile(FileAdmin):  # todo-lyw代码进一步完善中
 
     def on_file_delete(self, full_path, filename):
         """定义图片删除之后的行为"""
+        picture = TourPicture.query.filter(TourPicture.pic_name == filename).first()
+        delete_a_tour_picture(picture)
+        TourPictureThumbnail.query.filter(TourPictureThumbnail.picture_id == picture.id).delete()
         TourPicture.query.filter(TourPicture.pic_name == filename).delete()
         db.commit()
 
@@ -156,9 +160,11 @@ class TourPictureFile(FileAdmin):  # todo-lyw代码进一步完善中
             else:
                 try:
                     self.save_file(save_path_name, form.upload.data)
-                    db.add(TourPicture(tour_id, TOUR_PICTURE_BASE_PATH, TOUR_PICTURE_UPLOAD_FOLDER, pic_name,
-                                       upload_name, cover=0))
+                    new_picture = TourPicture(tour_id, TOUR_PICTURE_BASE_PATH, TOUR_PICTURE_UPLOAD_FOLDER, pic_name,
+                                              upload_name, cover=0)
+                    db.add(new_picture)
                     db.commit()
+                    save_thumbnail(new_picture.id)
                     self.on_file_upload(directory, path, pic_name)
                     return redirect('/admin/tourpicturefile/?tour_id=' + str(request.args.get('tour_id')))  # todo-lyw ugly
                 except Exception as ex:
@@ -218,3 +224,16 @@ def get_picture(path, directory, picture):
     rel_path = op.join(path, picture.pic_name)
 
     return picture.pic_name, rel_path, op.isdir(fp), op.getsize(fp)
+
+
+def delete_a_tour_picture(picture):
+    try:
+        picture_thumbnail = TourPictureThumbnail.query.filter(
+            TourPictureThumbnail.picture_id == picture.id).first()
+        base_path = picture.base_path+picture.rel_path+'/'
+        os.remove(os.path.join(base_path, picture_thumbnail.picture286_170))
+        os.remove(os.path.join(base_path, picture_thumbnail.picture640_288))
+        os.remove(os.path.join(base_path, picture_thumbnail.picture300_180))
+        os.remove(os.path.join(base_path, picture_thumbnail.picture176_160))
+    except:
+        pass
