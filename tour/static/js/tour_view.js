@@ -5,7 +5,6 @@ $(document).ready(function(){
 		var picture_select = $.parseHTML("<input class='btn btn-success' type='file' name='picture' id='picture' multiple>");
 		$("#picture").replaceWith(picture_select);
 	};
-
 	add_select();
 
     // 定义获取当前url属性的函数
@@ -25,6 +24,11 @@ $(document).ready(function(){
         var manager_link = $.parseHTML("<p><a class='btn btn-danger' href='/admin/tourpicturefile?tour_id="+gup('id')+"'>图片管理</a></p>");
         $("#picture").after(manager_link);
         $("#picture").remove();  // 去掉图片上传
+    } else {
+        $("#order_max").val(0);
+        $("#ordered").val(0);
+        $("#rank").val(0);
+        $("#stopped").val(0);
     }
 
 	// 表单屏蔽回车提交
