@@ -24,6 +24,11 @@ class Tour(Base):
 
     __tablename__ = TOUR_TABLE
 
+    __table_args__ = {
+        'mysql_engine': 'InnoDB',
+        'mysql_charset': 'utf8'
+    }
+
     id = Column(Integer, primary_key=True)
     title = Column(String(32), nullable=False)
     intro = Column(String(128), nullable=False)
@@ -71,6 +76,11 @@ class TourPicture(Base):
 
     __tablename__ = TOUR_PICTURE_TABLE
 
+    __table_args__ = {
+        'mysql_engine': 'InnoDB',
+        'mysql_charset': 'utf8'
+    }
+
     id = Column(Integer, primary_key=True)
     tour_id = Column(Integer, ForeignKey(Tour.id, ondelete='cascade', onupdate='cascade'), nullable=False)
     base_path = Column(String(128), nullable=False)
@@ -102,6 +112,11 @@ class TourPictureThumbnail(Base):
     """
 
     __tablename__ = PICTURE_THUMBNAIL_TABLE
+
+    __table_args__ = {
+        'mysql_engine': 'InnoDB',
+        'mysql_charset': 'utf8'
+    }
 
     id = Column(Integer, primary_key=True)
     picture_id = Column(Integer, ForeignKey(TourPicture.id, ondelete='cascade', onupdate='cascade'), nullable=False)
