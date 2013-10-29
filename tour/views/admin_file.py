@@ -165,6 +165,7 @@ class TourPictureFile(FileAdmin):  # todo-lyw代码进一步完善中
                     db.add(new_picture)
                     db.commit()
                     save_thumbnail(new_picture.id)
+                    db.commit()
                     self.on_file_upload(directory, path, pic_name)
                     return redirect('/admin/tourpicturefile/?tour_id=' + str(request.args.get('tour_id')))  # todo-lyw ugly
                 except Exception as ex:
