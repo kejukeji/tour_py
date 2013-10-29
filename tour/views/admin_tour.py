@@ -4,7 +4,7 @@ import logging
 import os
 import Image
 
-from wtforms.fields import TextField
+from wtforms.fields import TextField, TextAreaField
 from flask.ext.admin.contrib.sqla import ModelView
 from flask.ext.admin.babel import gettext
 from werkzeug import secure_filename
@@ -46,6 +46,12 @@ class TourView(ModelView):
     column_list = ('title', 'price', 'order_max', 'ordered', 'stopped', 'rank')
     edit_template = 'admin_tour/edit.html'
     create_template = 'admin_tour/create.html'
+    list_template = 'admin_tour/list.html'
+
+    form_overrides = dict(
+        intro=TextAreaField,
+        detail=TextAreaField
+    )
 
     def __init__(self, db_session, **kwargs):
         super(TourView, self).__init__(Tour, db_session, **kwargs)
@@ -142,7 +148,14 @@ def delete_tour_picture(tour_id):
     pictures = TourPicture.query.filter(TourPicture.tour_id == tour_id).all()
     for picture in pictures:
         try:
-            os.remove(os.path.join(picture.base_path+picture.rel_path+'/', picture.pic_name))
+            picture_thumbnail = TourPictureThumbnail.query.filter(
+                TourPictureThumbnail.picture_id == picture.id).first()
+            base_path = picture.base_path+picture.rel_path+'/'
+            os.remove(os.path.join(base_path, picture.pic_name))
+            os.remove(os.path.join(base_path, picture_thumbnail.picture286_170))
+            os.remove(os.path.join(base_path, picture_thumbnail.picture640_288))
+            os.remove(os.path.join(base_path, picture_thumbnail.picture300_180))
+            os.remove(os.path.join(base_path, picture_thumbnail.picture176_160))
         except:
             pass
 
