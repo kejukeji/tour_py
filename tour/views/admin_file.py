@@ -18,7 +18,7 @@ from flask.ext.admin.contrib.fileadmin import UploadForm
 from ..models import TourPicture, db, TourPictureThumbnail
 from ..utils import allowed_file_extension, time_file_name
 from ..ex_var import TOUR_PICTURE_BASE_PATH, TOUR_PICTURE_UPLOAD_FOLDER, TOUR_PICTURE_ALLOWED_EXTENSION
-from .admin_tour import save_thumbnail
+from .admin_tour import picture_resize
 
 
 class TourPictureFile(FileAdmin):  # todo-lyw代码进一步完善中
@@ -165,7 +165,6 @@ class TourPictureFile(FileAdmin):  # todo-lyw代码进一步完善中
                     db.add(new_picture)
                     db.commit()
                     save_thumbnail(new_picture.id)
-                    db.commit()
                     self.on_file_upload(directory, path, pic_name)
                     return redirect('/admin/tourpicturefile/?tour_id=' + str(request.args.get('tour_id')))  # todo-lyw ugly
                 except Exception as ex:
@@ -238,3 +237,22 @@ def delete_a_tour_picture(picture):
         os.remove(os.path.join(base_path, picture_thumbnail.picture176_160))
     except:
         pass
+
+
+def save_thumbnail(picture_id):
+    picture = TourPicture.query.filter(TourPicture.id == picture_id).first()
+    base_path = picture.base_path + picture.rel_path + '/'
+    picture286 = picture_resize(picture, (286, 170))
+    picture286_name = time_file_name(str(picture_id)) + 'nail.jpeg'
+    picture286.save(base_path + picture286_name, 'jpeg')
+    picture640 = picture_resize(picture, (640, 288))
+    picture640_name = time_file_name(str(picture_id)) + 'nail.jpeg'
+    picture640.save(base_path + picture640_name, 'jpeg')
+    picture300 = picture_resize(picture, (300, 180))
+    picture300_name = time_file_name(str(picture_id)) + 'nail.jpeg'
+    picture300.save(base_path + picture300_name, 'jpeg')
+    picture176 = picture_resize(picture, (176, 160))
+    picture176_name = time_file_name(str(picture_id)) + 'nail.jpeg'
+    picture176.save(base_path + picture176_name, 'jpeg')
+    db.add(TourPictureThumbnail(picture_id, picture286_name, picture640_name, picture300_name, picture176_name))
+    db.commit()
