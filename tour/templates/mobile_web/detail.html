@@ -72,7 +72,13 @@
             </div>
 		        	<div class="list-group">
                         {% for relate in relates %}
-                        <a href="{{ url_for('detail', tour_id=relate.id.__str__()) }}" class="list-group-item">{{ relate.title }}<span class="small-price">（<em>{{ relate.price }}</em>元/一个人）</span><i class="i-arrow i-arrow-right"></i></a>
+                        <a href="{{ url_for('detail', tour_id=relate.id.__str__()) }}" class="list-group-item">{{ relate.title }}<span class="small-price">（<em>
+                            {% if relate.discount %}
+                            {{ relate.discount }}
+                            {% else %}
+                            {{ relate.price }}
+                            {% endif %}
+                        </em>元/每人）</span><i class="i-arrow i-arrow-right"></i></a>
                         {% endfor %}
                     </div>
 			</div>
