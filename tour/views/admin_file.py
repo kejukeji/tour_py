@@ -18,7 +18,7 @@ from flask.ext.admin.contrib.fileadmin import UploadForm
 from ..models import TourPicture, db, TourPictureThumbnail
 from ..utils import allowed_file_extension, time_file_name
 from ..ex_var import TOUR_PICTURE_BASE_PATH, TOUR_PICTURE_UPLOAD_FOLDER, TOUR_PICTURE_ALLOWED_EXTENSION
-from .view_tool import picture_resize, save_thumbnail
+from .view_tool import save_thumbnail
 
 
 class TourPictureFile(FileAdmin):  # todo-lyw代码进一步完善中
