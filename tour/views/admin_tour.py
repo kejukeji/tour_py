@@ -32,12 +32,12 @@ class TourView(ModelView):
         title=u'标题',
         intro=u'简介',
         detail=u'详情',
-        price=u'价格',
+        price=u'原价',
+        discount=u'折扣价',
         order_max=u'最大订购人数',
         ordered=u'已订购人数',
         rank=u'排序',
         stopped=u'是否停止本订购',
-        discount=u'折扣价',
         tel=u'联系电话'
     )
     column_descriptions = dict(
