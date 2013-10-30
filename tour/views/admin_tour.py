@@ -35,7 +35,9 @@ class TourView(ModelView):
         order_max=u'最大订购人数',
         ordered=u'已订购人数',
         rank=u'排序',
-        stopped=u'是否停止本订购'
+        stopped=u'是否停止本订购',
+        discount=u'折扣价',
+        tel=u'联系电话'
     )
     column_descriptions = dict(
         order_max=u'最大订购人数，如果没有限制，默认为0',
@@ -43,7 +45,7 @@ class TourView(ModelView):
         rank=u'排序，值越大，可以约靠前，最前面四个作为广告放在最前面，默认为0',
         stopped=u'如果这个订购取消，可以勾选'
     )
-    column_list = ('title', 'price', 'order_max', 'ordered', 'stopped', 'rank')
+    column_list = ('title', 'price', 'order_max', 'ordered', 'stopped', 'rank', 'tel', 'discount')
     edit_template = 'admin_tour/edit.html'
     create_template = 'admin_tour/create.html'
     list_template = 'admin_tour/list.html'

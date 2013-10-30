@@ -44,7 +44,11 @@
 				         		<dt class="name">{{ tour.title }}</dt>
 				          		<dd class="desc">{{ tour.intro }}</dd>
 				          </dl>
-				          <p class="price"><em>{{ tour.price }}</em>元</p>
+                          {% if tour.discount %}
+				          <p class="price">折扣价：<em>{{ tour.discount }}</em>元</p>
+                          {% else %}
+                          <p class="price">价格：<em>{{ tour.price }}</em>元</p>
+                          {% endif %}
 				</a>
 			</li>
             {% endfor %}

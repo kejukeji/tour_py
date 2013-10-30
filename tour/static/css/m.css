@@ -482,7 +482,7 @@ header {
 }
 .deal-stat {
   position: relative;
-  padding-left: 170px;
+  padding-left: 162px;
 }
 .deal-stat img {
   position: absolute;
@@ -494,13 +494,12 @@ header {
   padding: 1px;
 }
 .deal-stat .deal-stat-cont {
-  padding-top: 20px;
-  height: 74px;
-  margin-bottom: 12px;
+  min-height: 82px;
+  margin-bottom: 20px;
 }
 .deal-stat .deal-stat-cont .deal-price-num {
-  line-height: 30px;
-  font-size: 1.1em;
+  line-height: 24px;
+  font-size: 1em;
   margin-bottom: 3px;
 }
 .deal-stat .deal-stat-cont .deal-price-num em {

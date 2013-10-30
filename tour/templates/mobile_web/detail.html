@@ -24,8 +24,17 @@
 			<div class="deal-stat">
 				<img src={{ tour.picture[0].picture300_180 }} width="150" height="90" />
 				<div class="deal-stat-cont">
-					<p class="deal-price-num"><em>{{ tour.price }}</em>元/一个人</p>
-					<a href="#" class="btn btn-large btn-oran">立即购买</a>
+					<p class="deal-price-num">原价：<em>{{ tour.price }}</em>元/每人</p>
+                    {% if tour.discount %}
+                    <p class="deal-price-num">折扣价：<em>{{ tour.discount }}</em>元/每人</p>
+                    {% else %}
+                    <p class="deal-price-num">折扣价：<em>{{ tour.price }}</em>元/每人</p>
+                    {% endif %}
+                    {% if tour.tel %}
+					<a href="tel:{{ tour.tel }}" class="btn btn-large btn-oran">立即购买</a>
+                    {% else %}
+                    <a href="javascript:void(0)" class="btn btn-large btn-gray">立即购买</a>
+                    {% endif %}
 					<!-- <a href="#" class="btn btn-large btn-gray">已售罄</a> -->
 				</div>
 			</div>
