@@ -34,11 +34,11 @@ class Tour(Base):
     intro = Column(String(128), nullable=False)
     detail = Column(String(256), nullable=False)
     price = Column(Float, nullable=False)
+    discount = Column(Float, nullable=False)
     order_max = Column(Integer, nullable=False, server_default='0')
     ordered = Column(Integer, nullable=False, server_default='0')
     rank = Column(Integer, nullable=False, server_default='0')
     stopped = Column(Boolean, nullable=False, server_default='0')
-    discount = Column(Float, nullable=False)
     tel = Column(String(16), nullable=False)
 
     def __init__(self, **kwargs):
