@@ -12,6 +12,7 @@ from flask import request, flash
 from ..models import Tour, TourPicture, TourPictureThumbnail, db
 from ..utils import form_to_dict, allowed_file_extension, time_file_name
 from ..ex_var import TOUR_PICTURE_BASE_PATH, TOUR_PICTURE_UPLOAD_FOLDER, TOUR_PICTURE_ALLOWED_EXTENSION
+from .view_tool import create_delete_picture, save_thumbnail
 
 log = logging.getLogger("flask-admin.sqla")
 
@@ -89,9 +90,6 @@ class TourView(ModelView):
         try:
             model.update(**form_to_dict(form))
             self.session.commit()
-            tour_id = model.id
-            tour_pictures = request.files.getlist("picture")  # 获取酒吧图片
-            save_tour_pictures(tour_id, tour_pictures)
         except Exception, ex:
             flash(gettext('Failed to update model. %(error)s', error=str(ex)), 'error')
             logging.exception('Failed to update model')
@@ -110,11 +108,12 @@ class TourView(ModelView):
                 Model to delete
         """
         try:
+            picture_list = get_picture_list(model.id)
             self.on_model_delete(model)
-            delete_tour_picture(model.id)
             self.session.flush()
             self.session.delete(model)
-            self.session.commit()
+            self.session.commit()  # 级联删除数据库记录
+            delete_pictures(picture_list)  # 删除所有的本地文件
             return True
         except Exception as ex:
             if self._debug:
@@ -140,64 +139,27 @@ def save_tour_pictures(tour_id, pictures):
             rel_path = TOUR_PICTURE_UPLOAD_FOLDER
             pic_name = time_file_name(secure_filename(upload_name), sign=tour_id)
             pic_to_save = TourPicture(tour_id, base_path, rel_path, pic_name, upload_name, cover=0)
-            db.add(pic_to_save)
             picture.save(os.path.join(base_path+rel_path+'/', pic_name))
+            db.add(pic_to_save)
             db.commit()
             save_thumbnail(pic_to_save.id)
 
 
-def delete_tour_picture(tour_id):
+def get_picture_list(tour_id):
+    """通过tour的id，返回所有需要删除的文件列表"""
+    picture_list = []
     pictures = TourPicture.query.filter(TourPicture.tour_id == tour_id).all()
     for picture in pictures:
-        delete_a_tour_picture(picture)
+        thumbnail_picture = TourPictureThumbnail.query.filter(TourPictureThumbnail.picture_id == picture.id).first()
+        picture_list.append(create_delete_picture(picture, thumbnail_picture))
+
+    return picture_list
 
 
-def delete_a_tour_picture(picture):
-    try:
-        picture_thumbnail = TourPictureThumbnail.query.filter(
-            TourPictureThumbnail.picture_id == picture.id).first()
-        base_path = picture.base_path+picture.rel_path+'/'
-        os.remove(os.path.join(base_path, picture.pic_name))
-        os.remove(os.path.join(base_path, picture_thumbnail.picture286_170))
-        os.remove(os.path.join(base_path, picture_thumbnail.picture640_288))
-        os.remove(os.path.join(base_path, picture_thumbnail.picture300_180))
-        os.remove(os.path.join(base_path, picture_thumbnail.picture176_160))
-    except:
-        pass
-
-
-def save_thumbnail(picture_id):
-    picture = TourPicture.query.filter(TourPicture.id == picture_id).first()
-    base_path = picture.base_path + picture.rel_path + '/'
-    picture286 = picture_resize(picture, (286, 170))
-    picture286_name = time_file_name(str(picture_id)) + 'nail.jpeg'
-    picture286.save(base_path + picture286_name, 'jpeg')
-    picture640 = picture_resize(picture, (640, 288))
-    picture640_name = time_file_name(str(picture_id)) + 'nail.jpeg'
-    picture640.save(base_path + picture640_name, 'jpeg')
-    picture300 = picture_resize(picture, (300, 180))
-    picture300_name = time_file_name(str(picture_id)) + 'nail.jpeg'
-    picture300.save(base_path + picture300_name, 'jpeg')
-    picture176 = picture_resize(picture, (176, 160))
-    picture176_name = time_file_name(str(picture_id)) + 'nail.jpeg'
-    picture176.save(base_path + picture176_name, 'jpeg')
-    db.add(TourPictureThumbnail(picture_id, picture286_name, picture640_name, picture300_name, picture176_name))
-    db.commit()
-
-
-def picture_resize(picture, resize):
-    picture_path = picture.base_path + picture.rel_path + '/' + picture.pic_name
-    im = Image.open(picture_path)
-    # crop到一定的比例大小，只是裁剪
-    normal_size = im.size
-    if normal_size[0] <= normal_size[1] * resize[0] / resize[1]:
-        start_pos = (normal_size[1] - normal_size[0] * resize[1] / resize[0]) / 2
-        image = im.crop((0, start_pos, normal_size[0], normal_size[0] * resize[1] / resize[0]))
-    else:
-        start_pos = (normal_size[0] - normal_size[1] * resize[0] / resize[1]) / 2
-        image = im.crop((start_pos, 0, normal_size[1] * resize[0] / resize[1], normal_size[1]))
-
-    # resize到更小的比例，只是缩小
-    resize_image = image.resize(resize)
-
-    return resize_image
+def delete_pictures(picture_list):
+    for picture in picture_list:
+            os.remove(picture.normal)
+            os.remove(picture.picture640_288)
+            os.remove(picture.picture176_160)
+            os.remove(picture.picture286_170)
+            os.remove(picture.picture300_180)

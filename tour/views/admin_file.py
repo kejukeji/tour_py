@@ -18,7 +18,7 @@ from flask.ext.admin.contrib.fileadmin import UploadForm
 from ..models import TourPicture, db, TourPictureThumbnail
 from ..utils import allowed_file_extension, time_file_name
 from ..ex_var import TOUR_PICTURE_BASE_PATH, TOUR_PICTURE_UPLOAD_FOLDER, TOUR_PICTURE_ALLOWED_EXTENSION
-from .admin_tour import picture_resize
+from .view_tool import picture_resize, save_thumbnail
 
 
 class TourPictureFile(FileAdmin):  # todo-lyw代码进一步完善中
@@ -69,11 +69,17 @@ class TourPictureFile(FileAdmin):  # todo-lyw代码进一步完善中
 
     def on_file_delete(self, full_path, filename):
         """定义图片删除之后的行为"""
+
+        # 在数据库移除记录
         picture = TourPicture.query.filter(TourPicture.pic_name == filename).first()
-        delete_a_tour_picture(picture)
-        TourPictureThumbnail.query.filter(TourPictureThumbnail.picture_id == picture.id).delete()
+        thumbnail_picture = TourPictureThumbnail.query.filter(TourPictureThumbnail.picture_id == picture.id).first()
         TourPicture.query.filter(TourPicture.pic_name == filename).delete()
+        TourPictureThumbnail.query.filter(TourPictureThumbnail.picture_id == picture.id).delete()
         db.commit()
+
+        # 移除本地略缩图文件
+        delete_a_tour_picture(picture, thumbnail_picture)
+
 
     @expose('/')
     @expose('/b/<path:path>')
@@ -148,7 +154,7 @@ class TourPictureFile(FileAdmin):  # todo-lyw代码进一步完善中
         if helpers.validate_form_on_submit(form):
             tour_id = request.args.get('tour_id')
             if not tour_id:
-                flash(gettext('这里无法上传图片，修改酒吧即可看到图片管理按钮。'), 'error')
+                flash(gettext('这里无法上传图片，修改折扣即可看到图片管理按钮。'), 'error')
                 return redirect("/admin/tourpicturefile")  # todo-lyw ugly
             upload_name = secure_filename(form.upload.data.filename)
             pic_name = time_file_name(upload_name, sign=tour_id)
@@ -226,10 +232,9 @@ def get_picture(path, directory, picture):
     return picture.pic_name, rel_path, op.isdir(fp), op.getsize(fp)
 
 
-def delete_a_tour_picture(picture):
+def delete_a_tour_picture(picture, picture_thumbnail):
+    """移除本地的略缩图文件"""
     try:
-        picture_thumbnail = TourPictureThumbnail.query.filter(
-            TourPictureThumbnail.picture_id == picture.id).first()
         base_path = picture.base_path+picture.rel_path+'/'
         os.remove(os.path.join(base_path, picture_thumbnail.picture286_170))
         os.remove(os.path.join(base_path, picture_thumbnail.picture640_288))
@@ -237,22 +242,3 @@ def delete_a_tour_picture(picture):
         os.remove(os.path.join(base_path, picture_thumbnail.picture176_160))
     except:
         pass
-
-
-def save_thumbnail(picture_id):
-    picture = TourPicture.query.filter(TourPicture.id == picture_id).first()
-    base_path = picture.base_path + picture.rel_path + '/'
-    picture286 = picture_resize(picture, (286, 170))
-    picture286_name = time_file_name(str(picture_id)) + 'nail.jpeg'
-    picture286.save(base_path + picture286_name, 'jpeg')
-    picture640 = picture_resize(picture, (640, 288))
-    picture640_name = time_file_name(str(picture_id)) + 'nail.jpeg'
-    picture640.save(base_path + picture640_name, 'jpeg')
-    picture300 = picture_resize(picture, (300, 180))
-    picture300_name = time_file_name(str(picture_id)) + 'nail.jpeg'
-    picture300.save(base_path + picture300_name, 'jpeg')
-    picture176 = picture_resize(picture, (176, 160))
-    picture176_name = time_file_name(str(picture_id)) + 'nail.jpeg'
-    picture176.save(base_path + picture176_name, 'jpeg')
-    db.add(TourPictureThumbnail(picture_id, picture286_name, picture640_name, picture300_name, picture176_name))
-    db.commit()

@@ -1,9 +1,10 @@
 # coding: utf-8
 
 from flask import render_template
-from ..models import Tour, TourPicture, TourPictureThumbnail
+from ..models import Tour, TourPicture, TourPictureThumbnail, db
 from sqlalchemy import desc
 from random import choice
+from .view_tool import create_picture
 
 
 def index(page=1):
@@ -62,18 +63,6 @@ def random_select(tours, number):
     return selects
 
 
-class Picture(object):
-    """保存图片信息的类"""
-    def __init__(self, base_path, normal, picture286_170, picture640_288, picture300_180, picture176_160):
-        self.normal = base_path + normal
-        self.picture286_170 = base_path + picture286_170
-        self.picture640_288 = base_path + picture640_288
-        self.picture300_180 = base_path + picture300_180
-        self.picture176_160 = base_path + picture176_160
 
 
-def create_picture(picture, picture_thumbnail):
-    """返回一个Picture的类"""
-    base_path = picture.rel_path + '/'
-    return Picture(base_path, picture.pic_name, picture_thumbnail.picture286_170, picture_thumbnail.picture640_288,
-                   picture_thumbnail.picture300_180, picture_thumbnail.picture176_160)
+

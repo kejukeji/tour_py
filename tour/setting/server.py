@@ -1,6 +1,7 @@
 # coding: utf-8
 
 from tour.setting.secret import EX_DB_PASSWORD, EX_DB_USER, EX_SECRET_KEY_SERVER, EX_DB_NAME
+# todo-lyw 这个地方新建数据库的时候使用绝对导入好一点
 
 # flask模块需要的配置参数
 # ===============================================================
