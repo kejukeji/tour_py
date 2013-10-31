@@ -69,17 +69,7 @@ class TourPictureFile(FileAdmin):  # todo-lyw代码进一步完善中
 
     def on_file_delete(self, full_path, filename):
         """定义图片删除之后的行为"""
-
-        # 在数据库移除记录
-        picture = TourPicture.query.filter(TourPicture.pic_name == filename).first()
-        thumbnail_picture = TourPictureThumbnail.query.filter(TourPictureThumbnail.picture_id == picture.id).first()
-        TourPicture.query.filter(TourPicture.pic_name == filename).delete()
-        TourPictureThumbnail.query.filter(TourPictureThumbnail.picture_id == picture.id).delete()
-        db.commit()
-
-        # 移除本地略缩图文件
-        delete_a_tour_picture(picture, thumbnail_picture)
-
+        pass
 
     @expose('/')
     @expose('/b/<path:path>')
@@ -215,7 +205,18 @@ class TourPictureFile(FileAdmin):  # todo-lyw代码进一步完善中
                 flash(gettext('Failed to delete directory: %(error)s', error=ex), 'error')
         else:
             try:
+                # 在数据库移除记录
+                picture = TourPicture.query.filter(TourPicture.pic_name == path).first()
+                thumbnail_picture = TourPictureThumbnail.query.filter(
+                    TourPictureThumbnail.picture_id == picture.id).first()
+                TourPicture.query.filter(TourPicture.pic_name == path).delete()
+                TourPictureThumbnail.query.filter(TourPictureThumbnail.picture_id == picture.id).delete()
+                db.commit()
+
+                # 移除本地图片文件
+                delete_a_tour_picture(picture, thumbnail_picture)
                 os.remove(full_path)
+
                 self.on_file_delete(full_path, path)
                 flash(gettext('File "%(name)s" was successfully deleted.', name=path))
             except Exception as ex:
