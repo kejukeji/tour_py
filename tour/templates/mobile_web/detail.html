@@ -24,7 +24,7 @@
 			<div class="deal-stat">
 				<img src={{ tour.picture[0].picture300_180 }} width="150" height="90" />
 				<div class="deal-stat-cont">
-					<p class="deal-price-num">原价：<em>{{ tour.price }}</em>元/每人</p>
+					<p class="deal-price-num">原价：<em style="text-decoration: line-through;">{{ tour.price }}</em>元/每人</p>
                     {% if tour.discount %}
                     <p class="deal-price-num">折扣价：<em>{{ tour.discount }}</em>元/每人</p>
                     {% else %}
@@ -42,14 +42,14 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">折扣简介</div>
 		        	<div class="panel-body">
-		       		<p class="panel-p">{{ tour.intro }}</p>
+		       		<p class="panel-p">{{ tour.intro | safe }}</p>
 		        	</div>
 		</div>
 
 		<div class="panel panel-default">
 			<div class="panel-heading">折扣详情</div>
 		        	<div class="panel-body">
-		       		<p class="panel-p">{{ tour.detail }}</p>
+		       		<p class="panel-p">{{ tour.detail | safe }}</p>
 		        	</div>
 		</div>
 
