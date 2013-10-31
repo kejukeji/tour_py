@@ -42,14 +42,14 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">折扣简介</div>
 		        	<div class="panel-body">
-		       		<p class="panel-p">{{ tour.intro.replace('\n', '<br />') | safe }}</p>
+		       		<p class="panel-p">{{ tour.intro.replace('\n\t', '<br />').replace('\n', '<br />') | safe }}</p>
 		        	</div>
 		</div>
 
 		<div class="panel panel-default">
 			<div class="panel-heading">折扣详情</div>
 		        	<div class="panel-body">
-		       		<p class="panel-p">{{ tour.detail.replace('\n', '<br />') | safe }}</p>
+		       		<p class="panel-p">{{ tour.detail.replace('\n\t', '<br />').replace('\n', '<br />') | safe }}</p>
 		        	</div>
 		</div>
 
