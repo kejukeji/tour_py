@@ -30,9 +30,9 @@ class Tour(Base):
     }
 
     id = Column(Integer, primary_key=True)
-    title = Column(String(32), nullable=False)
-    intro = Column(String(128), nullable=False)
-    detail = Column(String(256), nullable=False)
+    title = Column(String(64), nullable=False)
+    intro = Column(String(512), nullable=False)
+    detail = Column(String(2048), nullable=False)
     price = Column(Float, nullable=False)
     discount = Column(Float, nullable=False)
     order_max = Column(Integer, nullable=False, server_default='0')
