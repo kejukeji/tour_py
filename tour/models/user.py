@@ -96,13 +96,16 @@ class User(Base):
 
         return check_password(password, self.password)
 
-    def is_authenticated(self):  # todo-lyw 静态method是如何用的，和类方法的不同
+    @staticmethod
+    def is_authenticated():  # todo-lyw 静态method是如何用的，和类方法的不同
         return True
 
-    def is_active(self):
+    @staticmethod
+    def is_active():
         return True
 
-    def is_anonymous(self):
+    @staticmethod
+    def is_anonymous():
         return False
 
     def is_admin(self):
