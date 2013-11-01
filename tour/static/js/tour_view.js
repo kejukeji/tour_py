@@ -31,6 +31,12 @@ $(document).ready(function(){
         $("#stopped").val(0);
     }
 
+    function change_textarea() {
+        $("#intro").css('width', '552px').css('height', '60px');
+        $("#detail").css('width', '552px').css('height', '400px');
+    };
+    change_textarea();
+
 	// 表单屏蔽回车提交
     $("input").keypress(function(e) {
         var keyCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
