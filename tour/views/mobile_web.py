@@ -39,12 +39,15 @@ def wrap_picture(tours):
         return tours
 
     # 传过来一个列表，每个元素添加一张图片
+    new_tours = []  # 过滤没有图片的tour
     for tour in tours:
         picture = TourPicture.query.filter(TourPicture.tour_id == tour.id).first()
-        picture_thumbnail = TourPictureThumbnail.query.filter(TourPictureThumbnail.picture_id == picture.id).first()
-        tour.picture = create_picture(picture, picture_thumbnail)
+        if picture:
+            picture_thumbnail = TourPictureThumbnail.query.filter(TourPictureThumbnail.picture_id == picture.id).first()
+            tour.picture = create_picture(picture, picture_thumbnail)
+            new_tours.append(tour)
 
-    return tours
+    return new_tours
 
 
 def random_select(tours, number):
