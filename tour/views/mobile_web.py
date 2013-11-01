@@ -35,7 +35,8 @@ def wrap_picture(tours):
         tours.picture = []
         for picture in TourPicture.query.filter(TourPicture.tour_id == tours.id).all():
             picture_thumbnail = TourPictureThumbnail.query.filter(TourPictureThumbnail.picture_id == picture.id).first()
-            tours.picture.append(create_picture(picture, picture_thumbnail))
+            if picture_thumbnail:
+                tours.picture.append(create_picture(picture, picture_thumbnail))
         return tours
 
     # 传过来一个列表，每个元素添加一张图片
@@ -44,8 +45,9 @@ def wrap_picture(tours):
         picture = TourPicture.query.filter(TourPicture.tour_id == tour.id).first()
         if picture:
             picture_thumbnail = TourPictureThumbnail.query.filter(TourPictureThumbnail.picture_id == picture.id).first()
-            tour.picture = create_picture(picture, picture_thumbnail)
-            new_tours.append(tour)
+            if picture_thumbnail:
+                tour.picture = create_picture(picture, picture_thumbnail)
+                new_tours.append(tour)
 
     return new_tours
 

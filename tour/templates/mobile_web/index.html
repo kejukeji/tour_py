@@ -21,7 +21,11 @@
 		<div class="swipe"  id="slider">
 			<div class="swipe-wrap">
                 {% for banner in banners %}
-                <div><a href="{{ url_for('detail', tour_id=banner.id.__str__()) }}"><img src="{{ banner.picture.picture640_288 }}" /></a></div>
+                    {% if banner.picture %}
+                        <div><a href="{{ url_for('detail', tour_id=banner.id.__str__()) }}"><img src="{{ banner.picture.picture640_288 }}" /></a></div>
+                    {% elif %}
+                        <div><a href="{{ url_for('detail', tour_id=banner.id.__str__()) }}"><img src="" /></a></div>
+                    {% endif %}
                 {% endfor %}
 			</div>
 		</div>
@@ -40,7 +44,11 @@
 			<li>
 				<a href="{{ url_for('detail', tour_id=tour.id.__str__()) }}">
 					<i class="icon-new"></i>
+                    {% if tour.picture %}
 					<div class="pic-wrap"><img data-src="{{ tour.picture.picture286_170 }}" height="85"/></div>
+                    {% elif %}
+                    <div class="pic-wrap"><img data-src="" height="85"/></div>
+                    {% endif %}
 					<dl class="tit">
 				         		<dt class="name">{{ tour.title }}</dt>
 				          		<dd class="desc">{{ tour.intro }}</dd>
