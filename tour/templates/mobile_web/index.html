@@ -54,9 +54,9 @@
 				          		<dd class="desc">{{ tour.intro }}</dd>
 				          </dl>
                           {% if tour.discount %}
-				          <p class="price">折扣价：<em>{{ tour.discount }}</em>元/人起</p>
+				          <p class="price">折扣价：<em>{{ tour.discount.__int__() }}</em>元/人起</p>
                           {% else %}
-                          <p class="price">价格：<em>{{ tour.price }}</em>元/人起</p>
+                          <p class="price">价格：<em>{{ tour.price.__int__() }}</em>元/人起</p>
                           {% endif %}
 				</a>
 			</li>

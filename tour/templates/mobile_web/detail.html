@@ -29,11 +29,11 @@
                 <img src="" width="150" height="90" />
                 {% endif %}
 				<div class="deal-stat-cont">
-					<p class="deal-price-num">原价：<em style="text-decoration: line-through; color: gray;">{{ tour.price }}</em>元/人起</p>
+					<p class="deal-price-num">原价：<em style="text-decoration: line-through; color: gray;">{{ tour.price.__int__() }}</em>元/人起</p>
                     {% if tour.discount %}
-                    <p class="deal-price-num">折扣价：<em>{{ tour.discount }}</em>元/人起</p>
+                    <p class="deal-price-num">折扣价：<em>{{ tour.discount.__int__() }}</em>元/人起</p>
                     {% else %}
-                    <p class="deal-price-num">折扣价：<em>{{ tour.price }}</em>元/人起</p>
+                    <p class="deal-price-num">折扣价：<em>{{ tour.price.__int__() }}</em>元/人起</p>
                     {% endif %}
                     {% if tour.tel %}
 					<a href="tel:{{ tour.tel }}" class="btn btn-large btn-oran">立即购买</a>
@@ -83,9 +83,9 @@
                         {% for relate in relates %}
                         <a href="{{ url_for('detail', tour_id=relate.id.__str__()) }}" class="list-group-item">{{ relate.title }}<span class="small-price">（<em>
                             {% if relate.discount %}
-                            {{ relate.discount }}
+                            {{ relate.discount.__int__() }}
                             {% else %}
-                            {{ relate.price }}
+                            {{ relate.price.__int__() }}
                             {% endif %}
                         </em>元/每人）</span><i class="i-arrow i-arrow-right"></i></a>
                         {% endfor %}
