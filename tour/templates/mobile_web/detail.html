@@ -81,7 +81,7 @@
             </div>
 		        	<div class="list-group">
                         {% for relate in relates %}
-                        <a href="{{ url_for('detail', tour_id=relate.id.__str__()) }}#mp.weixin.qq.com" class="list-group-item">{{ relate.title }}<span class="small-price">（<em>
+                        <a href="{{ url_for('detail', tour_id=relate.id.__str__()) }}?mp.weixin.qq.com" class="list-group-item">{{ relate.title }}<span class="small-price">（<em>
                             {% if relate.discount %}
                             {{ relate.discount.__int__() }}
                             {% else %}
