@@ -36,7 +36,7 @@
                     <p class="deal-price-num">折扣价：<em>{{ tour.price.__int__() }}</em>元/人起</p>
                     {% endif %}
                     {% if tour.tel %}
-					<a href="tel:{{ tour.tel }}#mp.weixin.qq.com" class="btn btn-large btn-oran">立即购买</a>
+					<a href="tel:{{ tour.tel }}" class="btn btn-large btn-oran">立即购买</a>
                     {% else %}
                     <a href="javascript:void(0)" class="btn btn-large btn-gray">立即购买</a>
                     {% endif %}
@@ -81,7 +81,7 @@
             </div>
 		        	<div class="list-group">
                         {% for relate in relates %}
-                        <a href="{{ url_for('detail', tour_id=relate.id.__str__()) }}" class="list-group-item">{{ relate.title }}<span class="small-price">（<em>
+                        <a href="{{ url_for('detail', tour_id=relate.id.__str__()) }}#mp.weixin.qq.com" class="list-group-item">{{ relate.title }}<span class="small-price">（<em>
                             {% if relate.discount %}
                             {{ relate.discount.__int__() }}
                             {% else %}
