@@ -9,6 +9,7 @@ from flask.ext.admin.contrib.sqla import ModelView
 from flask.ext.admin.babel import gettext
 from werkzeug import secure_filename
 from flask import request, flash
+from flask.ext import login
 from ..models import Tour, TourPicture, TourPictureThumbnail, db
 from ..utils import form_to_dict, allowed_file_extension, time_file_name
 from ..ex_var import TOUR_PICTURE_BASE_PATH, TOUR_PICTURE_UPLOAD_FOLDER, TOUR_PICTURE_ALLOWED_EXTENSION
@@ -32,7 +33,7 @@ class TourView(ModelView):
         title=u'标题',
         intro=u'简介',
         detail=u'详情',
-        price=u'原价',
+        price=u'市场价',
         discount=u'折扣价',
         order_max=u'最大订购人数',
         ordered=u'已订购人数',
@@ -58,6 +59,9 @@ class TourView(ModelView):
 
     def __init__(self, db_session, **kwargs):
         super(TourView, self).__init__(Tour, db_session, **kwargs)
+
+    def is_accessible(self):
+        return login.current_user.is_admin()
 
     def scaffold_form(self):
         form_class = super(TourView, self).scaffold_form()
