@@ -9,7 +9,7 @@ from views import index, detail
 from models import db
 
 # 后台管理路径
-admin = Admin(name=u'折扣')
+admin = Admin(name=u'旅游折扣会')
 admin.init_app(app)
 admin.add_view(TourView(db, name=u'折扣管理', category=u'折扣'))
 # 折扣图片管理
