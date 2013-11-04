@@ -10,6 +10,7 @@ from werkzeug import secure_filename
 from flask.ext.admin.babel import gettext
 from flask import flash, url_for, redirect, request
 from flask.ext.admin import helpers
+from flask.ext import login
 from flask.ext.admin._compat import as_unicode
 from flask.ext.admin.base import expose
 from flask.ext.admin.contrib.fileadmin import FileAdmin
@@ -58,6 +59,9 @@ class TourPictureFile(FileAdmin):  # todo-lyw代码进一步完善中
             raise IOError('FileAdmin path "%s" does not exist or is not accessible' % base_path)
 
         super(FileAdmin, self).__init__(name, category, endpoint, url)
+
+    def is_accessible(self):
+        return login.current_user.is_admin()  # todo-lyw 为何这样也可以，这个login和login.py里面的那个为何是一样的
 
     def save_file(self, path, file_data):
         """保存图片"""

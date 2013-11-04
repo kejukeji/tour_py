@@ -44,9 +44,30 @@ class RegisterForm(form.Form):
         if User.query.filter(User.login_name == field.data).count() > 0:
             raise validators.ValidationError(u'邮箱重复')
 
+
+class MyAnonymousUser(object):
+    '''
+    This is the default object for representing an anonymous user.
+    '''
+    def is_authenticated(self):
+        return False
+
+    def is_active(self):
+        return False
+
+    def is_anonymous(self):
+        return True
+
+    def get_id(self):
+        return
+
+    def is_admin(self):
+        return False
+
 login_manager = login.LoginManager()
 login_manager.setup_app(app)
 
+login_manager.anonymous_user = MyAnonymousUser
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -57,7 +78,7 @@ def login_view():
     login_form = LoginForm(request.form)
     if helpers.validate_form_on_submit(login_form):
         user = login_form.get_user()
-        login.login_user(user)
+        login_user_with_remember(user)
         if user.admin:
             return redirect('/admin')  # todo-lyw 这里不该使用绝对编码
 
@@ -74,10 +95,25 @@ def register_view():
         db.add(user)
         db.commit()
 
-        login.login_user(user)
+        login_user_with_remember(user)
         if user.admin:
             return redirect('/admin')
 
         return redirect('/')
 
     return render_template('admin_tour/auth.html', form=register_form)
+
+
+@login.login_required
+def logout_view():
+    login.logout_user()
+    return redirect('/')
+
+
+def login_user_with_remember(user):
+    """检查form字段的内容是否记录用户自动登陆"""
+
+    if request.form.get('remember', None):
+        login.login_user(user, remember=True)
+
+    login.login_user(user, remember=False)
