@@ -22,7 +22,7 @@ def index(page=1):
 def detail(tour_id):
     """详情页"""
     tour = wrap_picture(Tour.query.filter(Tour.id == tour_id).first())
-    relates = random_select(Tour.query.order_by(desc(Tour.rank)).all(), 3)
+    relates = random_select(Tour.query.filter(Tour.stopped == 0).order_by(desc(Tour.rank)).all(), 3)
 
     return render_template('web_mobile/detail.html',
                            tour=tour,
