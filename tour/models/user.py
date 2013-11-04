@@ -23,6 +23,11 @@ class User(Base):
 
     __tablename__ = USER_TABLE
 
+    __table_args__ = {
+        'mysql_engine': 'InnoDB',
+        'mysql_charset': 'utf8'
+    }
+
     id = Column(Integer, primary_key=True)
     login_name = Column(String(32), nullable=True, server_default=None, unique=True)
     password = Column(String(64), nullable=True, server_default=None)

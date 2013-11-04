@@ -4,7 +4,7 @@ from flask import render_template
 from ..models import Tour, TourPicture, TourPictureThumbnail, db
 from sqlalchemy import desc
 from random import choice
-from .view_tool import create_picture
+from .picture_tool import create_picture
 
 
 def index(page=1):
@@ -12,7 +12,7 @@ def index(page=1):
     banners = wrap_picture(Tour.query.filter(Tour.stopped == 0).order_by(desc(Tour.rank)).limit(4).all())
     tours = wrap_picture(Tour.query.filter(Tour.stopped == 0).order_by(desc(Tour.rank)).all())
 
-    return render_template('mobile_web/index.html',
+    return render_template('web_mobile/index.html',
                            banners=banners,
                            tours=tours)
 
@@ -22,7 +22,7 @@ def detail(tour_id):
     tour = wrap_picture(Tour.query.filter(Tour.id == tour_id).first())
     relates = random_select(Tour.query.order_by(desc(Tour.rank)).all(), 3)
 
-    return render_template('mobile_web/detail.html',
+    return render_template('web_mobile/detail.html',
                            tour=tour,
                            relates=relates)
 

@@ -13,7 +13,7 @@ from flask.ext import login
 from ..models import Tour, TourPicture, TourPictureThumbnail, db
 from ..utils import form_to_dict, allowed_file_extension, time_file_name
 from ..ex_var import TOUR_PICTURE_BASE_PATH, TOUR_PICTURE_UPLOAD_FOLDER, TOUR_PICTURE_ALLOWED_EXTENSION
-from .view_tool import create_delete_picture, save_thumbnail
+from .picture_tool import create_delete_picture, save_thumbnail
 
 log = logging.getLogger("flask-admin.sqla")
 

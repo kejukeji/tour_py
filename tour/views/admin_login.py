@@ -1,11 +1,12 @@
 # coding: utf-8
 
 from flask import redirect, render_template, request
-from ..models import User, db
 from wtforms import form, fields, validators
 from flask.ext import login
-from tour import app
 from flask.ext.admin import helpers
+
+from ..models import User, db
+from tour import app
 
 
 class LoginForm(form.Form):
