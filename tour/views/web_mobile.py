@@ -1,10 +1,12 @@
 # coding: utf-8
 
+"""web相关的视图都在这里定义"""
+
 from flask import render_template
 from ..models import Tour, TourPicture, TourPictureThumbnail, db
 from sqlalchemy import desc
 from random import choice
-from .picture_tool import create_picture
+from .picture_tools import create_rel_picture
 
 
 def index(page=1):
@@ -36,7 +38,7 @@ def wrap_picture(tours):
         for picture in TourPicture.query.filter(TourPicture.tour_id == tours.id).all():
             picture_thumbnail = TourPictureThumbnail.query.filter(TourPictureThumbnail.picture_id == picture.id).first()
             if picture_thumbnail:
-                tours.picture.append(create_picture(picture, picture_thumbnail))
+                tours.picture.append(create_rel_picture(picture, picture_thumbnail))
         return tours
 
     # 传过来一个列表，每个元素添加一张图片
@@ -46,7 +48,7 @@ def wrap_picture(tours):
         if picture:
             picture_thumbnail = TourPictureThumbnail.query.filter(TourPictureThumbnail.picture_id == picture.id).first()
             if picture_thumbnail:
-                tour.picture = create_picture(picture, picture_thumbnail)
+                tour.picture = create_rel_picture(picture, picture_thumbnail)
                 new_tours.append(tour)
 
     return new_tours

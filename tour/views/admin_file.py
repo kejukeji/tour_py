@@ -1,5 +1,7 @@
 # coding: utf-8
 
+"""后台文件管理"""
+
 import os
 import os.path as op
 import platform
@@ -19,7 +21,7 @@ from flask.ext.admin.contrib.fileadmin import UploadForm
 from ..models import TourPicture, db, TourPictureThumbnail
 from ..utils import allowed_file_extension, time_file_name
 from ..ex_var import TOUR_PICTURE_BASE_PATH, TOUR_PICTURE_UPLOAD_FOLDER, TOUR_PICTURE_ALLOWED_EXTENSION
-from .picture_tool import save_thumbnail
+from .picture_tools import save_thumbnails
 
 
 class TourPictureFile(FileAdmin):  # todo-lyw代码进一步完善中
@@ -164,7 +166,7 @@ class TourPictureFile(FileAdmin):  # todo-lyw代码进一步完善中
                                               upload_name, cover=0)
                     db.add(new_picture)
                     db.commit()
-                    save_thumbnail(new_picture.id)
+                    save_thumbnails(new_picture.id)
                     self.on_file_upload(directory, path, pic_name)
                     return redirect('/admin/tourpicturefile/?tour_id=' + str(request.args.get('tour_id')))  # todo-lyw ugly
                 except Exception as ex:
@@ -218,7 +220,7 @@ class TourPictureFile(FileAdmin):  # todo-lyw代码进一步完善中
                 db.commit()
 
                 # 移除本地图片文件
-                delete_a_tour_picture(picture, thumbnail_picture)
+                delete_thumbnails_only(picture, thumbnail_picture)
                 os.remove(full_path)
 
                 self.on_file_delete(full_path, path)
@@ -237,7 +239,7 @@ def get_picture(path, directory, picture):
     return picture.pic_name, rel_path, op.isdir(fp), op.getsize(fp)
 
 
-def delete_a_tour_picture(picture, picture_thumbnail):
+def delete_thumbnails_only(picture, picture_thumbnail):
     """移除本地的略缩图文件"""
     try:
         base_path = picture.base_path+picture.rel_path+'/'

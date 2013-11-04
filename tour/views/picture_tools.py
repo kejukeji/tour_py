@@ -5,7 +5,7 @@ from ..utils import time_file_name
 import Image
 
 
-def save_thumbnail(picture_id):  # todo-lyw views里面的多个函数式重复的，db参数的问题，这个有时间可以统一一下到单独的文件里面去，而且需要更好的命名
+def save_thumbnails(picture_id):  # todo-lyw views里面的多个函数式重复的，db参数的问题，这个有时间可以统一一下到单独的文件里面去，而且需要更好的命名
     picture = TourPicture.query.filter(TourPicture.id == picture_id).first()
     base_path = picture.base_path + picture.rel_path + '/'
     picture286 = picture_resize(picture, (286, 170))
@@ -34,12 +34,12 @@ class Picture(object):
         self.picture176_160 = base_path + picture176_160
 
 
-def create_picture(picture, picture_thumbnail):
-    """返回一个Picture的类"""
+def create_rel_picture(picture, picture_thumbnail):
+    """返回一个Picture的类，图片的路径是相对的，用于获取服务器数据"""
 
     # 如果picture_thumbnail为空，创建一个
     if not picture_thumbnail:
-        save_thumbnail(picture.id)
+        save_thumbnails(picture.id)
         picture_thumbnail = TourPictureThumbnail.query.filter(TourPictureThumbnail.picture_id == picture.id).first()
 
     base_path = picture.rel_path + '/'
@@ -47,12 +47,12 @@ def create_picture(picture, picture_thumbnail):
                    picture_thumbnail.picture300_180, picture_thumbnail.picture176_160)
 
 
-def create_delete_picture(picture, picture_thumbnail):
-    """返回一个Picture的类"""
+def create_base_picture(picture, picture_thumbnail):
+    """返回一个Picture的类，图片的路径是绝对的，用于删除本地文件"""
 
     # 如果picture_thumbnail为空，创建一个
     if not picture_thumbnail:
-        save_thumbnail(picture.id)
+        save_thumbnails(picture.id)
         picture_thumbnail = TourPictureThumbnail.query.filter(TourPictureThumbnail.picture_id == picture.id).first()
 
     base_path = picture.base_path + picture.rel_path + '/'

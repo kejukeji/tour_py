@@ -1,8 +1,9 @@
 # coding: utf-8
 
+"""旅游折扣管理界面"""
+
 import logging
 import os
-import Image
 
 from wtforms.fields import TextField, TextAreaField
 from flask.ext.admin.contrib.sqla import ModelView
@@ -13,7 +14,7 @@ from flask.ext import login
 from ..models import Tour, TourPicture, TourPictureThumbnail, db
 from ..utils import form_to_dict, allowed_file_extension, time_file_name
 from ..ex_var import TOUR_PICTURE_BASE_PATH, TOUR_PICTURE_UPLOAD_FOLDER, TOUR_PICTURE_ALLOWED_EXTENSION
-from .picture_tool import create_delete_picture, save_thumbnail
+from .picture_tools import create_base_picture, save_thumbnails
 
 log = logging.getLogger("flask-admin.sqla")
 
@@ -146,7 +147,7 @@ def save_tour_pictures(tour_id, pictures):
             picture.save(os.path.join(base_path+rel_path+'/', pic_name))
             db.add(pic_to_save)
             db.commit()
-            save_thumbnail(pic_to_save.id)
+            save_thumbnails(pic_to_save.id)
 
 
 def get_picture_list(tour_id):
@@ -155,7 +156,7 @@ def get_picture_list(tour_id):
     pictures = TourPicture.query.filter(TourPicture.tour_id == tour_id).all()
     for picture in pictures:
         thumbnail_picture = TourPictureThumbnail.query.filter(TourPictureThumbnail.picture_id == picture.id).first()
-        picture_list.append(create_delete_picture(picture, thumbnail_picture))
+        picture_list.append(create_base_picture(picture, thumbnail_picture))
 
     return picture_list
 

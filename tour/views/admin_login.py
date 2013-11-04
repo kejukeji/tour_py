@@ -1,5 +1,7 @@
 # coding: utf-8
 
+"""用户登陆相关"""
+
 from flask import redirect, render_template, request
 from wtforms import form, fields, validators
 from flask.ext import login
@@ -47,9 +49,8 @@ class RegisterForm(form.Form):
 
 
 class MyAnonymousUser(object):
-    '''
-    This is the default object for representing an anonymous user.
-    '''
+    """This is the default object for representing an anonymous user."""
+
     def is_authenticated(self):
         return False
 

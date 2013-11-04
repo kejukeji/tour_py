@@ -4,12 +4,12 @@ import os
 
 from tour import app
 from flask.ext.admin import Admin
+from tour.views.admin_view import HomeView
 from views import TourView, TourPictureFile
 from views import index, detail
 from views.admin_user import UserView
 from models import db
 from views.admin_login import login_view, register_view, logout_view
-from views.admin_home import HomeView
 
 # 后台管理路径
 admin = Admin(name=u'旅游折扣会', index_view=HomeView())

@@ -1,10 +1,13 @@
 # coding: utf-8
 
+"""后台其他的视图"""
+
 from flask.ext import login
 from flask.ext.admin import AdminIndexView, expose
 
 
 class HomeView(AdminIndexView):
+    """定义了后台的首页视图"""
 
     def __init__(self):
         super(HomeView, self).__init__(template='admin_tour/home.html', name=u'首页')
