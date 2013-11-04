@@ -7,11 +7,15 @@ from flask.ext.admin import Admin
 from views import TourView, TourPictureFile
 from views import index, detail
 from models import db
+from views.login import login_view, register_view
 
 # 后台管理路径
 admin = Admin(name=u'旅游折扣会')
 admin.init_app(app)
 admin.add_view(TourView(db, name=u'折扣管理', category=u'折扣'))
+# 用户登陆
+app.add_url_rule('/login', 'login_view', login_view, methods=('GET', 'POST'))
+app.add_url_rule('/register', 'register_view', register_view, methods=('GET', 'POST'))
 # 折扣图片管理
 picture_path = os.path.join(os.path.dirname(__file__), 'static/system/tour_picture')
 admin.add_view(TourPictureFile(picture_path, '/static/system/tour_picture/', name=u'折扣图片', category=u'折扣'))

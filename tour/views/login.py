@@ -53,7 +53,6 @@ def load_user(user_id):
     return User.query.filter(User.id == user_id).first()
 
 
-@app.route('/login/', methods=('GET', 'POST'))
 def login_view():
     login_form = LoginForm(request.form)
     if helpers.validate_form_on_submit(login_form):
@@ -67,7 +66,6 @@ def login_view():
     return render_template('admin_tour/auth.html', form=login_form)
 
 
-@app.route('/register/', methods=('GET', 'POST'))
 def register_view():
     register_form = RegisterForm(request.form)
     if helpers.validate_form_on_submit(register_form):
