@@ -3,7 +3,7 @@
 {% import 'admin/actions.html' as actionslib with context %}
 
 {% block body %}
-    {% block breadcrums %}
+{#    {% block breadcrums %}
     <ul class="breadcrumb">
         <li>
             <a href="{{ get_dir_url('.index', path=None) }}">{{ _gettext('Root') }}</a>
@@ -19,7 +19,7 @@
         </li>
         {% endif %}
     </ul>
-    {% endblock %}
+    {% endblock %}#}
 
     {% block file_list_table %}
     <table class="table table-striped table-bordered model-list">

@@ -14,13 +14,13 @@ from tour import app
 class LoginForm(form.Form):
     """定义用户登陆的Form"""
 
-    user_name = fields.TextField(u'昵称或邮箱', validators=[validators.required()])
+    user_name = fields.TextField(u'昵称', validators=[validators.required()])
     password = fields.PasswordField(u'密码', validators=[validators.required()])
 
     def validate_user_name(self, field):
         user = self.get_user()
         if not user:
-            raise validators.ValidationError('用户名不存在')
+            raise validators.ValidationError('昵称不存在')
 
         if not user.check_password(self.password.data):
             raise validators.ValidationError('密码错误')
@@ -42,9 +42,13 @@ class RegisterForm(form.Form):
     def validate_login(self, field):
         if User.query.filter(User.nick_name == field.data).count() > 0:
             raise validators.ValidationError(u'昵称重复')
+        if User.query.filter(User.login_name == field.data).count() > 0:
+            raise validators.ValidationError(u'昵称重复')
 
     def validate_email(self, field):
         if User.query.filter(User.login_name == field.data).count() > 0:
+            raise validators.ValidationError(u'邮箱重复')
+        if User.query.filter(User.nick_name == field.data).count() > 0:
             raise validators.ValidationError(u'邮箱重复')
 
 

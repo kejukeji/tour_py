@@ -68,8 +68,3 @@ def random_select(tours, number):
             selects.append(select)
 
     return selects
-
-
-
-
-
