@@ -24,7 +24,7 @@
 			<h3>{{ tour.title }}</h3>
 			<div class="deal-stat">
                 {% if tour.picture %}
-				<a href="http://geekyard.org{{ tour.picture[0].picture300_180 }}"><img src="http://geekyard.org{{ tour.picture[0].picture300_180 }}" width="150" height="90" /></a>
+				<img src={{ tour.picture[0].picture300_180 }} width="150" height="90" />
                 {% else %}
                 <img src="" width="150" height="90" />
                 {% endif %}
