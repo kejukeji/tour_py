@@ -40,6 +40,7 @@ class Tour(Base):
     rank = Column(Integer, nullable=False, server_default='0')
     stopped = Column(Boolean, nullable=False, server_default='0')
     tel = Column(String(16), nullable=False)
+    tour_type_id = Column(Integer, nullable=True)
 
     def __init__(self, **kwargs):
         self.title = kwargs.pop('title')
@@ -52,6 +53,7 @@ class Tour(Base):
         self.stopped = kwargs.pop('stopped', 0)
         self.discount = kwargs.pop('discount')
         self.tel = kwargs.pop('tel')
+        self.tour_type_id = kwargs.pop('tour_type_id', None)
 
     def update(self, **kwargs):
         self.title = kwargs.pop('title')
@@ -64,6 +66,7 @@ class Tour(Base):
         self.stopped = kwargs.pop('stopped', 0)
         self.discount = kwargs.pop('discount')
         self.tel = kwargs.pop('tel')
+        self.tour_type_id = kwargs.pop('tour_type_id', None)
 
     def __repr__(self):
         return '<Tour(title: %s)>' % self.title
