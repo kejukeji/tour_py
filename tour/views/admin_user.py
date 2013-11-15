@@ -31,15 +31,17 @@ class UserView(ModelView):
                          open_id=u'第三方登陆ID', sign_up_date=u'注册时间', admin=u'权限')
     column_descriptions = dict(
         admin=u'权限控制',
-        login_type=u'这里默认填0',
+        login_type=u'这里默认为注册用户',
         login_name=u'用户邮箱或者手机号，识别用户',
         nick_name=u'用户昵称，用于登陆'
     )
     column_choices = dict(
-        admin=[(0, u'普通用户'), (1, u'管理员'), (2, u'编辑员')]
+        admin=[(0, u'普通用户'), (1, u'管理员'), (2, u'编辑员')],
+        login_type=[(0, u'注册用户'), (1, u'微博用户'), (2, u'QQ用户')]
     )
     form_choices = dict(
-        admin=[('0', u'普通用户'), ('1', u'管理员'), ('2', u'编辑员')]
+        admin=[('0', u'普通用户'), ('1', u'管理员'), ('2', u'编辑员')],
+        login_type=[('0', u'注册用户')]
     )
 
     def __init__(self, db, **kwargs):

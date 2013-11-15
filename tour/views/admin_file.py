@@ -255,7 +255,10 @@ def delete_thumbnails_only(picture, picture_thumbnail):
 
 def access_picture(tour_id):
     tour = Tour.query.filter(Tour.id == tour_id).first()
-    if administrator() or tour.user_id == login.current_user.id:
+    if administrator():
         return True
 
+    if tour:
+        if tour.user_id == login.current_user.id:
+            return True
     return False
