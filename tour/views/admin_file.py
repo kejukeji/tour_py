@@ -18,11 +18,11 @@ from flask.ext.admin.base import expose
 from flask.ext.admin.contrib.fileadmin import FileAdmin
 from flask.ext.admin.contrib.fileadmin import UploadForm
 
-from ..models import TourPicture, db, TourPictureThumbnail
+from ..models import TourPicture, db, TourPictureThumbnail, Tour
 from ..utils import allowed_file_extension, time_file_name
 from ..ex_var import TOUR_PICTURE_BASE_PATH, TOUR_PICTURE_UPLOAD_FOLDER, TOUR_PICTURE_ALLOWED_EXTENSION
 from .picture_tools import save_thumbnails
-
+from .admin_tour import administrator
 
 class TourPictureFile(FileAdmin):  # todo-lyw代码进一步完善中
     """酒吧图片的后台管理"""
@@ -97,6 +97,8 @@ class TourPictureFile(FileAdmin):  # todo-lyw代码进一步完善中
         items = []
 
         tour_id = request.args.get("tour_id", None)
+        if not access_picture(tour_id):
+            return redirect('/admin')
         if tour_id:
             for picture in TourPicture.query.filter(TourPicture.tour_id == tour_id).all():
                 items.append(get_picture(path, directory, picture))
@@ -249,3 +251,10 @@ def delete_thumbnails_only(picture, picture_thumbnail):
         os.remove(os.path.join(base_path, picture_thumbnail.picture176_160))
     except:
         pass
+
+def access_picture(tour_id):
+    tour = Tour.query.filter(Tour.id == tour_id).first()
+    if administrator() or tour.user_id == login.current_user.id:
+        return True
+
+    return False

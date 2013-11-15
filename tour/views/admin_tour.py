@@ -5,7 +5,8 @@
 import logging
 import os
 
-from wtforms.fields import TextField, TextAreaField
+from wtforms.fields import TextField, TextAreaField, HiddenField
+from flask.ext.admin.base import expose
 from flask.ext.admin.contrib.sqla import ModelView
 from flask.ext.admin.babel import gettext
 from werkzeug import secure_filename
@@ -15,6 +16,9 @@ from ..models import Tour, TourPicture, TourPictureThumbnail, db
 from ..utils import form_to_dict, allowed_file_extension, time_file_name
 from ..ex_var import TOUR_PICTURE_BASE_PATH, TOUR_PICTURE_UPLOAD_FOLDER, TOUR_PICTURE_ALLOWED_EXTENSION
 from .picture_tools import create_base_picture, save_thumbnails
+from sqlalchemy import or_
+from flask.ext.admin.contrib.sqla import tools
+from sqlalchemy.orm import joinedload
 
 log = logging.getLogger("flask-admin.sqla")
 
@@ -24,7 +28,7 @@ class TourView(ModelView):
 
     page_size = 30
     can_create = True
-    can_delete = True
+    can_delete = False
     can_edit = True
     column_display_pk = True
     column_searchable_list = ('title', 'intro', 'detail')
@@ -56,7 +60,8 @@ class TourView(ModelView):
 
     form_overrides = dict(
         intro=TextAreaField,
-        detail=TextAreaField
+        detail=TextAreaField,
+        user_id=HiddenField
     )
 
     def __init__(self, db_session, **kwargs):
@@ -74,7 +79,9 @@ class TourView(ModelView):
         """改写flask的新建model的函数"""
 
         try:
-            model = self.model(**form_to_dict(form))
+            form_dict = form_to_dict(form)
+            form_dict['user_id'] = login.current_user.id
+            model = self.model(**form_dict)
             self.session.add(model)  # 保存折扣基本资料
             self.session.commit()
             tour_id = model.id  # 获取和保存折扣id
@@ -94,8 +101,11 @@ class TourView(ModelView):
     def update_model(self, form, model):
         """改写了update函数"""
         try:
-            model.update(**form_to_dict(form))
-            self.session.commit()
+            if administrator() or login.current_user.id == model.user_id:
+                model.update(**form_to_dict(form))
+                self.session.commit()
+            else:
+                flash('权限不够呢，所以无法修改', 'info')
         except Exception, ex:
             flash(gettext('Failed to update model. %(error)s', error=str(ex)), 'error')
             logging.exception('Failed to update model')
@@ -114,13 +124,17 @@ class TourView(ModelView):
                 Model to delete
         """
         try:
-            picture_list = get_picture_list(model.id)
-            self.on_model_delete(model)
-            self.session.flush()
-            self.session.delete(model)
-            self.session.commit()  # 级联删除数据库记录
-            delete_pictures(picture_list)  # 删除所有的本地文件
-            return True
+            if administrator() or login.current_user.id == model.user_id:
+                picture_list = get_picture_list(model.id)
+                self.on_model_delete(model)
+                self.session.flush()
+                self.session.delete(model)
+                self.session.commit()  # 级联删除数据库记录
+                delete_pictures(picture_list)  # 删除所有的本地文件
+                return True
+            else:
+                flash('权限不够呢，所以无法删除', 'info')
+
         except Exception as ex:
             if self._debug:
                 raise
@@ -130,8 +144,212 @@ class TourView(ModelView):
             self.session.rollback()
             return False
 
-    #def is_accessible(self):  # 登陆管理功能先关闭，后期添加
-    #    return current_user.is_admin()
+    def get_list(self, page, sort_column, sort_desc, search, filters, execute=True, user_id=None):
+        """
+            Return models from the database.
+
+            :param page:
+                Page number
+            :param sort_column:
+                Sort column name
+            :param sort_desc:
+                Descending or ascending sort
+            :param search:
+                Search query
+            :param execute:
+                Execute query immediately? Default is `True`
+            :param filters:
+                List of filter tuples
+        """
+
+        # Will contain names of joined tables to avoid duplicate joins
+        joins = set()
+
+        query = self.get_query()
+        count_query = self.get_count_query()
+
+        if user_id:
+            query = query.filter(Tour.user_id == user_id)
+
+        # Apply search criteria
+        if self._search_supported and search:
+            # Apply search-related joins
+            if self._search_joins:
+                for jn in self._search_joins.values():
+                    query = query.join(jn)
+                    count_query = count_query.join(jn)
+
+                joins = set(self._search_joins.keys())
+
+            # Apply terms
+            terms = search.split(' ')
+
+            for term in terms:
+                if not term:
+                    continue
+
+                stmt = tools.parse_like_term(term)
+                filter_stmt = [c.ilike(stmt) for c in self._search_fields]
+                query = query.filter(or_(*filter_stmt))
+                count_query = count_query.filter(or_(*filter_stmt))
+
+        # Apply filters
+        if filters and self._filters:
+            for idx, value in filters:
+                flt = self._filters[idx]
+
+                # Figure out joins
+                tbl = flt.column.table.name
+
+                join_tables = self._filter_joins.get(tbl, [])
+
+                for table in join_tables:
+                    if table.name not in joins:
+                        query = query.join(table)
+                        count_query = count_query.join(table)
+                        joins.add(table.name)
+
+                # Apply filter
+                query = flt.apply(query, value)
+                count_query = flt.apply(count_query, value)
+
+        # Calculate number of rows
+        count = count_query.scalar()
+
+        # Auto join
+        for j in self._auto_joins:
+            query = query.options(joinedload(j))
+
+        # Sorting
+        if sort_column is not None:
+            if sort_column in self._sortable_columns:
+                sort_field = self._sortable_columns[sort_column]
+
+                query, joins = self._order_by(query, joins, sort_field, sort_desc)
+        else:
+            order = self._get_default_order()
+
+            if order:
+                query, joins = self._order_by(query, joins, order[0], order[1])
+
+        # Pagination
+        if page is not None:
+            query = query.offset(page * self.page_size)
+
+        query = query.limit(self.page_size)
+
+        # Execute if needed
+        if execute:
+            query = query.all()
+
+        return count, query
+
+    # Views
+    @expose('/')
+    def index_view(self):
+        """
+            List view
+        """
+        if administrator():
+            self.can_delete = True
+        else:
+            self.can_delete = False
+
+        # Grab parameters from URL
+        page, sort_idx, sort_desc, search, filters = self._get_extra_args()
+
+        # Map column index to column name
+        sort_column = self._get_column_by_idx(sort_idx)
+        if sort_column is not None:
+            sort_column = sort_column[0]
+
+        # Get count and data
+        if administrator():
+            user_id = None
+        else:
+            user_id = login.current_user.id
+        count, data = self.get_list(page, sort_column, sort_desc,
+                                    search, filters, user_id=user_id)
+
+        # Calculate number of pages
+        num_pages = count // self.page_size
+        if count % self.page_size != 0:
+            num_pages += 1
+
+        # Pregenerate filters
+        if self._filters:
+            filters_data = dict()
+
+            for idx, f in enumerate(self._filters):
+                flt_data = f.get_options(self)
+
+                if flt_data:
+                    filters_data[idx] = flt_data
+        else:
+            filters_data = None
+
+        # Various URL generation helpers
+        def pager_url(p):
+            # Do not add page number if it is first page
+            if p == 0:
+                p = None
+
+            return self._get_url('.index_view', p, sort_idx, sort_desc,
+                                 search, filters)
+
+        def sort_url(column, invert=False):
+            desc = None
+
+            if invert and not sort_desc:
+                desc = 1
+
+            return self._get_url('.index_view', page, column, desc,
+                                 search, filters)
+
+        # Actions
+        actions, actions_confirmation = self.get_actions_list()
+
+        return self.render(self.list_template,
+                               data=data,
+                               # List
+                               list_columns=self._list_columns,
+                               sortable_columns=self._sortable_columns,
+                               # Stuff
+                               enumerate=enumerate,
+                               get_pk_value=self.get_pk_value,
+                               get_value=self.get_list_value,
+                               return_url=self._get_url('.index_view',
+                                                        page,
+                                                        sort_idx,
+                                                        sort_desc,
+                                                        search,
+                                                        filters),
+                               # Pagination
+                               count=count,
+                               pager_url=pager_url,
+                               num_pages=num_pages,
+                               page=page,
+                               # Sorting
+                               sort_column=sort_idx,
+                               sort_desc=sort_desc,
+                               sort_url=sort_url,
+                               # Search
+                               search_supported=self._search_supported,
+                               clear_search_url=self._get_url('.index_view',
+                                                              None,
+                                                              sort_idx,
+                                                              sort_desc),
+                               search=search,
+                               # Filters
+                               filters=self._filters,
+                               filter_groups=self._filter_groups,
+                               filter_types=self._filter_types,
+                               filter_data=filters_data,
+                               active_filters=filters,
+
+                               # Actions
+                               actions=actions,
+                               actions_confirmation=actions_confirmation)
 
 
 def save_tour_pictures(tour_id, pictures):
@@ -169,3 +387,9 @@ def delete_pictures(picture_list):
             os.remove(picture.picture176_160)
             os.remove(picture.picture286_170)
             os.remove(picture.picture300_180)
+
+def administrator():
+    if login.current_user.is_admin() and login.current_user.admin == 1:
+        return True
+
+    return False
