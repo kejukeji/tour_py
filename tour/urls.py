@@ -11,7 +11,6 @@ from views.admin_user import UserView
 from models import db
 from views.admin_login import login_view, register_view, logout_view
 from flask.ext import restful
-from restful.ajax import GetTourType, GetTourTypeById
 
 # 后台管理路径
 admin = Admin(name=u'旅游折扣会', index_view=HomeView())
@@ -21,8 +20,6 @@ admin.add_view(UserView(db, name=u'用户管理'))
 
 # 后台获取相关ajax文件的路径
 api = restful.Api(app)
-api.add_resource(GetTourType, '/restful/admin/tour_type')
-api.add_resource(GetTourTypeById, '/restful/admin/tour_type_by_id/<int:tour_id>')
 
 # 用户登陆
 app.add_url_rule('/login', 'login_view', login_view, methods=('GET', 'POST'))

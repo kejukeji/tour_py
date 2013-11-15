@@ -19,10 +19,11 @@ from flask.ext.admin.contrib.fileadmin import FileAdmin
 from flask.ext.admin.contrib.fileadmin import UploadForm
 
 from ..models import TourPicture, db, TourPictureThumbnail, Tour
+from tour.views.admin_tools import administrator
 from ..utils import allowed_file_extension, time_file_name
 from ..ex_var import TOUR_PICTURE_BASE_PATH, TOUR_PICTURE_UPLOAD_FOLDER, TOUR_PICTURE_ALLOWED_EXTENSION
 from .picture_tools import save_thumbnails
-from .admin_tour import administrator
+
 
 class TourPictureFile(FileAdmin):  # todo-lyw代码进一步完善中
     """酒吧图片的后台管理"""

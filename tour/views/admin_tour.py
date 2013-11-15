@@ -12,13 +12,16 @@ from flask.ext.admin.babel import gettext
 from werkzeug import secure_filename
 from flask import request, flash
 from flask.ext import login
-from ..models import Tour, TourPicture, TourPictureThumbnail, db
-from ..utils import form_to_dict, allowed_file_extension, time_file_name
-from ..ex_var import TOUR_PICTURE_BASE_PATH, TOUR_PICTURE_UPLOAD_FOLDER, TOUR_PICTURE_ALLOWED_EXTENSION
-from .picture_tools import create_base_picture, save_thumbnails
 from sqlalchemy import or_
 from flask.ext.admin.contrib.sqla import tools
 from sqlalchemy.orm import joinedload
+
+from ..models import Tour, TourPicture, TourPictureThumbnail, db
+from tour.views.admin_tools import administrator
+from ..utils import form_to_dict, allowed_file_extension, time_file_name
+from ..ex_var import TOUR_PICTURE_BASE_PATH, TOUR_PICTURE_UPLOAD_FOLDER, TOUR_PICTURE_ALLOWED_EXTENSION
+from .picture_tools import create_base_picture, save_thumbnails
+
 
 log = logging.getLogger("flask-admin.sqla")
 
@@ -392,9 +395,3 @@ def delete_pictures(picture_list):
             os.remove(picture.picture176_160)
             os.remove(picture.picture286_170)
             os.remove(picture.picture300_180)
-
-def administrator():
-    if login.current_user.is_admin() and login.current_user.admin == 1:
-        return True
-
-    return False
