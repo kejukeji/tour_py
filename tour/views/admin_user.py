@@ -36,10 +36,10 @@ class UserView(ModelView):
         nick_name=u'用户昵称，用于登陆'
     )
     column_choices = dict(
-        admin=[(0, u'普通用户'), (1, u'管理员'), (2, u'编辑员')]
+        admin=[('0', u'普通用户'), ('1', u'管理员'), ('2', u'编辑员')]
     )
     form_choices = dict(
-        admin=[(0, u'普通用户'), (1, u'管理员'), (2, u'编辑员')]
+        admin=[('0', u'普通用户'), ('1', u'管理员'), ('2', u'编辑员')]
     )
 
     def __init__(self, db, **kwargs):
