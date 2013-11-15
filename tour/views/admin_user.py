@@ -35,13 +35,18 @@ class UserView(ModelView):
         login_name=u'用户邮箱或者手机号，识别用户',
         nick_name=u'用户昵称，用于登陆'
     )
+    column_choices = dict(
+        admin=[(0, u'普通用户'), (1, u'管理员'), (2, u'编辑员')]
+    )
+    form_choices = dict(
+        admin=[(0, u'普通用户'), (1, u'管理员'), (2, u'编辑员')]
+    )
 
     def __init__(self, db, **kwargs):
         super(UserView, self).__init__(User, db, **kwargs)
 
     def scaffold_form(self):
         form_class = super(UserView, self).scaffold_form()
-        form_class.admin = SelectField(label=u'权限控制', choices=[('0', u'普通用户'), ('1', u'管理员'), ('2', u'编辑员')])
         return form_class
 
     def is_accessible(self):
