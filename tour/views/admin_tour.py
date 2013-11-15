@@ -61,7 +61,7 @@ class TourView(ModelView):
     create_template = 'admin_tour/create.html'
     list_template = 'admin_tour/list.html'
     column_choices = dict(
-        tour_type_id=[('1', u'国内游'), ('2', u'出境游'), ('3', u'上海周边游'), ('4', u'春秋正品')]
+        tour_type_id=[(1, u'国内游'), (2, u'出境游'), (3, u'上海周边游'), (4, u'春秋正品')]
     )
     form_choices = dict(
         tour_type_id=[('1', u'国内游'), ('2', u'出境游'), ('3', u'上海周边游'), ('4', u'春秋正品')]
