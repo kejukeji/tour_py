@@ -35,7 +35,7 @@ class User(Base):
     open_id = Column(String(64), nullable=True, server_default=None)
     nick_name = Column(String(32), nullable=False, unique=True)
     sign_up_date = Column(DATETIME, nullable=True, server_default=None)
-    admin = Column(Boolean, nullable=False, server_default='0')
+    admin = Column(Integer, nullable=False, server_default='0')
 
     def __init__(self, **kwargs):
         self.login_type = kwargs.pop('login_type')

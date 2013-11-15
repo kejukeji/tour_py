@@ -10,6 +10,7 @@ from flask.ext.admin.contrib.sqla import ModelView
 from flask.ext.admin.babel import gettext
 from flask.ext import login
 from flask import flash
+from wtforms.fields import SelectField
 
 from ..utils import form_to_dict
 from ..models import User
@@ -27,9 +28,9 @@ class UserView(ModelView):
     column_searchable_list = ('login_name', 'nick_name')
     column_display_pk = True
     column_labels = dict(id=u'ID', login_name=u'用户识别', password=u'密码', login_type=u'登陆类型', nick_name=u'昵称',
-                         open_id=u'第三方登陆ID', sign_up_date=u'注册时间', admin=u'管理员')
+                         open_id=u'第三方登陆ID', sign_up_date=u'注册时间', admin=u'权限')
     column_descriptions = dict(
-        admin=u'用户是否具有管理员权限',
+        admin=u'权限控制',
         login_type=u'这里默认填0',
         login_name=u'用户邮箱或者手机号，识别用户',
         nick_name=u'用户昵称，用于登陆'
@@ -38,8 +39,16 @@ class UserView(ModelView):
     def __init__(self, db, **kwargs):
         super(UserView, self).__init__(User, db, **kwargs)
 
+    def scaffold_form(self):
+        form_class = super(UserView, self).scaffold_form()
+        form_class.admin = SelectField(label=u'权限控制', choices=[('0', u'普通用户'), ('1', u'管理员'), ('2', u'编辑员')])
+        return form_class
+
     def is_accessible(self):
-        return login.current_user.is_admin()
+        if login.current_user.is_admin() and login.current_user.admin == 1:
+            return True
+
+        return False
 
     def create_model(self, form):
         """改写flask的新建model的函数"""
