@@ -71,6 +71,7 @@ class TourView(ModelView):
         detail=TextAreaField,
         user_id=HiddenField
     )
+    column_filters = ('tour_type_id',)
 
     def __init__(self, db_session, **kwargs):
         super(TourView, self).__init__(Tour, db_session, **kwargs)
