@@ -2,21 +2,43 @@
 
 """web相关的视图都在这里定义"""
 
-from flask import render_template
+from flask import render_template, url_for
 from ..models import Tour, TourPicture, TourPictureThumbnail, db
 from sqlalchemy import desc
 from random import choice
 from .picture_tools import create_rel_picture
+import random
 
+
+def catagory_index(type_id, title=u'淘旅游'):
+    """添加参数分类"""
+    def catagory():
+        """定义一个通用的视图函数"""
+        banners = wrap_picture(Tour.query.filter(Tour.stopped == 0).order_by(desc(Tour.rank)).limit(4).all())
+        tours = wrap_picture(Tour.query.filter(Tour.stopped == 0).filter(
+            Tour.tour_type_id == type_id).order_by(desc(Tour.rank)).all())
+
+        return render_template('web_mobile/catagory.html',
+                               banners=banners,
+                               tours=tours,
+                               title=title)
+
+    return catagory
+
+# 1 国内游 2 出境游 3 上海周边游 4 春秋正品
+guonei = catagory_index(1, title=u'淘旅游 - 国内游')
+chujing = catagory_index(2, title=u'淘旅游 - 出境游')
+shanghai = catagory_index(3, title=u'淘旅游 - 周边游')
+zhengpin = catagory_index(4, title=u'淘旅游 - 春秋正品')
 
 def index(page=1):
     """首页视图"""
     banners = wrap_picture(Tour.query.filter(Tour.stopped == 0).order_by(desc(Tour.rank)).limit(4).all())
-    tours = wrap_picture(Tour.query.filter(Tour.stopped == 0).order_by(desc(Tour.rank)).all())
+    tao_url = random_url()
 
     return render_template('web_mobile/index.html',
                            banners=banners,
-                           tours=tours)
+                           tao_url=tao_url)
 
 
 def detail(tour_id):
@@ -68,3 +90,10 @@ def random_select(tours, number):
             selects.append(select)
 
     return selects
+
+def random_url():
+    """随机生成一个URL的链接详情页"""
+    query = Tour.query.filter(Tour.stopped == 0)
+    length = query.count()
+    tour_id = query.all()[random.randint(0, length-1)].id
+    return url_for('detail', tour_id=tour_id)

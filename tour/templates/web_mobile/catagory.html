@@ -7,13 +7,14 @@
 <meta name="format-detection" content="email=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 
-<title>淘旅游</title>
+<title>{{ title }}</title>
 <link rel="stylesheet" href="../../static/css/m.min.css" type="text/css">
 <script type="text/javascript" src="../../static/js/google_analysis.js"></script>
 </head>
 <body>
 	<header>
-		<i class="i-tao"></i>
+		淘旅游
+        <a href="/" class="icon-home"></a>
         <a class="icon-share" href="javascript:void(0)" id="J-share"></a>
 		<a href="#" class="icon-code"></a>
 	</header>
@@ -40,21 +41,29 @@
 	<!-- banner ends / -->
 
 	<section>
-		<table class="table-list">
-			<tbody>
-				<tr>
-					<td class="domestic-tour"><a href="/guonei">国内游<figure class="icons-domestic"></figure></a></td>
-					<td class="outbound-tour"><a href="/chujing">出境游<figure class="icons-outbound"></figure></a></td>
-				</tr>
-				<tr>
-					<td class="area-tour"><a href="/shanghai">周边游<figure class="icons-area"></figure></a></td>
-					<td class="tao-tao" rowspan="2"><a href="{{ tao_url }}">淘一淘</a></td>
-				</tr>
-				<tr>
-					<td class="chun-qiu"><a href="/zhengpin">春秋正品<figure class="icons-chun"></figure></a></td>
-				</tr>
-			</tbody>
-		</table>
+		<ul class="index-list clearfix">
+            {% for tour in tours %}
+			<li>
+				<a href="{{ url_for('detail', tour_id=tour.id.__str__()) }}?mp.weixin.qq.com">
+					<i class="icon-new"></i>
+                    {% if tour.picture %}
+					<div class="pic-wrap"><img data-src="{{ tour.picture.picture286_170 }}" height="85"/></div>
+                    {% else %}
+                    <div class="pic-wrap"><img data-src="" height="85"/></div>
+                    {% endif %}
+					<dl class="tit">
+				         		<dt class="name">{{ tour.title }}</dt>
+				          		<dd class="desc">{{ tour.intro }}</dd>
+				          </dl>
+                          {% if tour.discount %}
+				          <p class="price">折扣价：<em>{{ tour.discount.__int__() }}</em>元起/人</p>
+                          {% else %}
+                          <p class="price">市场价：<em>{{ tour.price.__int__() }}</em>元起/人</p>
+                          {% endif %}
+				</a>
+			</li>
+            {% endfor %}
+		</ul>
 		<div class="banner">
 			<img src="../../static/image/banner.png" alt="banner" />
 		</div>

@@ -85,6 +85,57 @@ input.fixAKeyboard:focus {
   background-repeat: no-repeat;
   -webkit-background-size: 100px auto;
 }
+.i-tao {
+  width: 53px;
+  height: 18px;
+  display: block;
+  background-image: url(img/icon_title.png);
+  background-repeat: no-repeat;
+  -webkit-background-size: 53px 18px;
+  margin: 0 auto;
+  padding: 15px 0;
+  background-position: 0px 15px;
+}
+[class^="icons-"],
+[class*=" icons-"] {
+  display: inline-block;
+  vertical-align: middle;
+  background-image: url(img/index.png);
+  background-repeat: no-repeat;
+  -webkit-background-size: 120px auto;
+}
+.icons-domestic {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-position: 4px 6px;
+  right: 10px;
+  top: 10px;
+}
+.icons-outbound {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-position: -53px 9px;
+  right: 10px;
+  top: 10px;
+}
+.icons-area {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-position: 1px -32px;
+  right: 10px;
+  top: 10px;
+}
+.icons-chun {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-position: -52px -34px;
+  right: 10px;
+  top: 10px;
+}
 .icon-new {
   position: absolute;
   width: 35px;
@@ -369,7 +420,7 @@ header {
   width: 100%;
   height: 48px;
   line-height: 48px;
-  background-color: #4898d6;
+  background: -webkit-gradient(linear, 0 0, 0 100%, from(#1a88f7), to(#0c6fd4));
   color: #ffffff;
   text-align: center;
   font-size: 18px;
@@ -470,6 +521,58 @@ header {
 .index-list > li .price em {
   color: #ea5f23;
   font-weight: bold;
+}
+.table-list {
+  width: 100%;
+}
+.table-list td {
+  height: 80px;
+  width: 50%;
+}
+.table-list td a {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: #FFF;
+  font-size: 15px;
+  padding-left: 10%;
+  padding-top: 21px;
+  box-sizing: border-box;
+  font-weight: bold;
+}
+.table-list td.tao-tao a {
+  text-align: center;
+  padding: 0;
+  padding-top: 48px;
+}
+.table-list .domestic-tour {
+  background-color: #36a9ea;
+}
+.table-list .outbound-tour {
+  background-color: #85cc18;
+}
+.table-list .area-tour {
+  background-color: #f2b711;
+}
+.table-list .chun-qiu {
+  background-color: #fa5263;
+}
+.table-list .tao-tao {
+  background-color: #9c69ac;
+}
+.banner img {
+  width: 100%;
+  height: auto;
+}
+footer.index-footer {
+  color: #666;
+  font-size: 12px;
+  padding: 5px 0;
+}
+footer.index-footer p {
+  line-height: 15px;
+  text-align: center;
 }
 .detail-wrap {
   padding: 0 10px;
