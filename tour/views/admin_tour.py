@@ -51,6 +51,7 @@ class TourView(ModelView):
         tour_type_id=u'所属分类'
     )
     column_descriptions = dict(
+        title=u'标题太长的话，分类页面只会显示13个字，其他的使用...代替了',
         order_max=u'最大订购人数，如果没有限制，默认为0',
         ordered=u'已订购人数，首先默认为0，打电话之后手动添加',
         rank=u'排序，值越大，可以约靠前，最前面四个作为广告放在最前面，默认为0',

@@ -52,7 +52,11 @@
                     <div class="pic-wrap"><img data-src="" height="85"/></div>
                     {% endif %}
 					<dl class="tit">
-				         		<dt class="name">{{ tour.title }}</dt>
+                                {% if tour.title.__len__() > 13 %}
+				         		<dt class="name">{{ tour.title[0:13] }}...</dt>
+                                {% else %}
+                                <dt class="name">{{ tour.title }}...</dt>
+                                {% endif %}
 {#				          		<dd class="desc">{{ tour.intro }}</dd>#}
 				          </dl>
                           {% if tour.discount %}
