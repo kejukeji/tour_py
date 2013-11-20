@@ -53,12 +53,12 @@
                     <div class="pic-wrap"><img src="" height="85"/></div>
                     {% endif %}
 					<dl class="tit">
-                                {% if tour.title.__len__() > 13 %}
-				         		<dt class="name">{{ tour.title[0:13] }}...</dt>
+                                {% if tour.title.__len__() > 18 %}
+				         		<dt class="name">{{ tour.title[0:18] }}...</dt>
                                 {% else %}
                                 <dt class="name">{{ tour.title }}</dt>
                                 {% endif %}
-{#				          		<dd class="desc">{{ tour.intro }}</dd>#}
+				          		<dd class="desc"></dd>
 				          </dl>
                           {% if tour.discount %}
 				          <p class="price">折扣价：<em>{{ tour.discount.__int__() }}</em>元起/人</p>
