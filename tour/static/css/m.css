@@ -159,6 +159,15 @@ input.fixAKeyboard:focus {
   left: 0;
   top: 0;
   -webkit-background-size: 100px auto;
+  background-position: -28px -40px;
+}
+.icon-home {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  left: 0;
+  top: 0;
+  -webkit-background-size: 100px auto;
   background-position: 11px -40px;
 }
 .icon-share {
@@ -168,7 +177,7 @@ input.fixAKeyboard:focus {
   right: 0;
   top: 0;
   -webkit-background-size: 120px auto;
-  background-position: -47px -53px;
+  background-position: -83px -53px;
 }
 .icon-weibo,
 .icon-weixin,
@@ -485,7 +494,7 @@ header {
   display: block;
   position: relative;
   border: 1px solid #bababa;
-  height: 150px;
+  height: 162px;
 }
 .index-list > li a .pic-wrap {
   max-height: 85px;
@@ -502,9 +511,10 @@ header {
 .index-list > li a .tit .name {
   padding-bottom: 4px;
   font-weight: bold;
-  font-size: 1.1em;
+  font-size: 13px;
   color: #545454;
-  height: 15px;
+  height: 28px;
+  line-height: 16px;
   overflow: hidden;
   word-break: break-all;
 }
