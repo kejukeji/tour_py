@@ -173,19 +173,20 @@ MZ.app = {
 		// 初始化滑动
 		initSlider();
 
+	},
+	sortInit: function() {
 		// 初始化图片懒加载
 		$('.index-list img').unveil();
-
 	},
 	detailInit: function() {
 		var contTemplete = '<div class="panel panel-default" style="margin-bottom:0;">\
-			<div class="panel-heading">分享<a id="J-close" href="javascript:void(0);" class="close">关闭</a></div>\
-		        	<div class="list-group">\
-		        		<a href="' + 'http://v.t.sina.com.cn/share/share.php?url=' + window.location.href + '&amp;title=智游折扣' + '" class="list-group-item"><i class="icon-weibo"></i>新浪微博</a>\
-		        		<a href="' + 'http://v.t.qq.com/share/share.php?url=' + window.location.href + '&amp;title=智游折扣' + '" class="list-group-item"><i class="icon-qq-weibo"></i>腾讯微博</a>\
-		        		<a href="' + 'http://share.renren.com/share/buttonshare.do?link=' + window.location.href + '&amp;title=智游折扣' + '" class="list-group-item"><i class="icon-renren"></i>人人网</a>\
-		        		<a href="' + 'http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=' + window.location.href + '&amp;title=智游折扣' + '" class="list-group-item"><i class="icon-qq-zone"></i>QQ空间</a>\
-			</div>\
+            <div class="panel-heading">分享<a id="J-close" href="javascript:void(0);" class="close">关闭</a></div>\
+                    <div class="list-group">\
+                     <a href="' + 'http://v.t.sina.com.cn/share/share.php?url=' + window.location.href + '&amp;title=智游折扣' + '" class="list-group-item"><i class="icon-weibo"></i>新浪微博</a>\
+                     <a href="' + 'http://v.t.qq.com/share/share.php?url=' + window.location.href + '&amp;title=智游折扣' + '" class="list-group-item"><i class="icon-qq-weibo"></i>腾讯微博</a>\
+                     <a href="' + 'http://share.renren.com/share/buttonshare.do?link=' + window.location.href + '&amp;title=智游折扣' + '" class="list-group-item"><i class="icon-renren"></i>人人网</a>\
+                     <a href="' + 'http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=' + window.location.href + '&amp;title=智游折扣' + '" class="list-group-item"><i class="icon-qq-zone"></i>QQ空间</a>\
+            </div>\
 		</div>';
 		var shareBtn = $('#J-share');
 		shareBtn.bind('click', function(e) {

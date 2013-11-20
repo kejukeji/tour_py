@@ -144,23 +144,22 @@ input.fixAKeyboard:focus {
   left: -2px;
   top: -2px;
 }
+.icon-hot {
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  background-position: -50px -164px;
+  left: -2px;
+  top: -2px;
+}
 .icon-back {
   position: absolute;
   width: 48px;
   height: 48px;
   left: 0;
   top: 0;
-  -webkit-background-size: 120px auto;
-  background-position: 18px -53px;
-}
-.icon-home {
-  position: absolute;
-  width: 48px;
-  height: 48px;
-  left: 0;
-  top: 0;
   -webkit-background-size: 100px auto;
-  background-position: 11px -37px;
+  background-position: 11px -40px;
 }
 .icon-share {
   position: absolute;
@@ -200,7 +199,7 @@ input.fixAKeyboard:focus {
   height: 8px;
   border-right: 2px solid #999;
   border-bottom: 2px solid #999;
-  right: 20px;
+  right: 8px;
   cursor: pointer;
 }
 .i-arrow-right {
@@ -471,7 +470,7 @@ header {
   background: #f76706;
 }
 .index-list {
-  padding: 0 0 0 10px;
+  padding: 10px 0 0 10px;
 }
 .index-list > li {
   float: left;
@@ -505,6 +504,9 @@ header {
   font-weight: bold;
   font-size: 1.1em;
   color: #545454;
+  height: 15px;
+  overflow: hidden;
+  word-break: break-all;
 }
 .index-list > li a .tit .desc {
   font-size: 0.8em;
@@ -514,7 +516,7 @@ header {
 }
 .index-list > li .price {
   color: #2d2d2d;
-  font-size: 1em;
+  font-size: 12px;
   line-height: 22px;
   padding-left: 5px;
 }
