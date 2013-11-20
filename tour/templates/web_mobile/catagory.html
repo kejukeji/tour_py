@@ -47,9 +47,9 @@
 				<a href="{{ url_for('detail', tour_id=tour.id.__str__()) }}?mp.weixin.qq.com">
 					<i class="icon-new"></i>
                     {% if tour.picture %}
-					<div class="pic-wrap"><img data-src="{{ tour.picture.picture286_170 }}" height="85"/></div>
+					<div class="pic-wrap"><img src="{{ tour.picture.picture286_170 }}" height="85"/></div>
                     {% else %}
-                    <div class="pic-wrap"><img data-src="" height="85"/></div>
+                    <div class="pic-wrap"><img src="" height="85"/></div>
                     {% endif %}
 					<dl class="tit">
                                 {% if tour.title.__len__() > 13 %}
