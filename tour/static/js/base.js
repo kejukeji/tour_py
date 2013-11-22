@@ -184,7 +184,6 @@ MZ.app = {
                     <div class="list-group">\
                      <a href="' + 'http://v.t.sina.com.cn/share/share.php?url=' + window.location.href + '&amp;title=智游折扣' + '" class="list-group-item"><i class="icon-weibo"></i>新浪微博</a>\
                      <a href="' + 'http://v.t.qq.com/share/share.php?url=' + window.location.href + '&amp;title=智游折扣' + '" class="list-group-item"><i class="icon-qq-weibo"></i>腾讯微博</a>\
-                     <a href="' + 'http://share.renren.com/share/buttonshare.do?link=' + window.location.href + '&amp;title=智游折扣' + '" class="list-group-item"><i class="icon-renren"></i>人人网</a>\
                      <a href="' + 'http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=' + window.location.href + '&amp;title=智游折扣' + '" class="list-group-item"><i class="icon-qq-zone"></i>QQ空间</a>\
             </div>\
 		</div>';
