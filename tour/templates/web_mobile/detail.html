@@ -16,7 +16,7 @@
 		淘旅游 - 折扣详情
 		<!--<a href="javascript:void(0);" class="icon-home" onclick="history.back();"></a>-->
 {#         <a href="javascript:history.back();" class="icon-back"></a>#}
-        <a href="/" class="icon-home"></a>
+        <a href="http://taoly.cn/" class="icon-home"></a>
 		<a class="icon-share" href="javascript:void(0)" id="J-share"></a>
 	</header>
 
@@ -37,9 +37,9 @@
                     <p class="deal-price-num">折扣价：<em>{{ tour.price.__int__() }}</em>元起/人</p>
                     {% endif %}
                     {% if tour.tel %}
-					<a href="tel:{{ tour.tel }}" class="btn btn-large btn-oran">电话预订</a>
+					<a href="tel:{{ tour.tel }}" class="btn btn-large btn-oran" id="phone">电话预订</a>
                     {% else %}
-                    <a href="javascript:void(0)" class="btn btn-large btn-gray">电话预订</a>
+                    <a href="javascript:void(0)" class="btn btn-large btn-gray" id="phone">电话预订</a>
                     {% endif %}
 					<!-- <a href="#" class="btn btn-large btn-gray">已售罄</a> -->
 				</div>
@@ -82,7 +82,7 @@
             </div>
 		        	<div class="list-group">
                         {% for relate in relates %}
-                        <a href="{{ url_for('detail', tour_id=relate.id.__str__()) }}?mp.weixin.qq.com" class="list-group-item">{{ relate.title }}<span class="small-price">（<em>
+                        <a href="http://taoly.cn{{ url_for('detail', tour_id=relate.id.__str__()) }}?mp.weixin.qq.com" class="list-group-item">{{ relate.title }}<span class="small-price">（<em>
                             {% if relate.discount %}
                             {{ relate.discount.__int__() }}
                             {% else %}
@@ -110,5 +110,6 @@
 		MZ.app.detailInit();
 	});
 	</script>
+    <script type="text/javascript" src="../../static/js/google_event.js"></script>
 </body>
 </html>

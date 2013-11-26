@@ -23,9 +23,9 @@
 			<div class="swipe-wrap">
                 {% for banner in banners %}
                     {% if banner.picture %}
-                        <div><a href="{{ url_for('detail', tour_id=banner.id.__str__()) }}?mp.weixin.qq.com"><img src="{{ banner.picture.picture640_288 }}" /></a></div>
+                        <div><a href="http://taoly.cn{{ url_for('detail', tour_id=banner.id.__str__()) }}?mp.weixin.qq.com"><img src="{{ banner.picture.picture640_288 }}" /></a></div>
                     {% else %}
-                        <div><a href="{{ url_for('detail', tour_id=banner.id.__str__()) }}?mp.weixin.qq.com"><img src="" /></a></div>
+                        <div><a href="http://taoly.cn{{ url_for('detail', tour_id=banner.id.__str__()) }}?mp.weixin.qq.com"><img src="" /></a></div>
                     {% endif %}
                 {% endfor %}
 			</div>
@@ -43,15 +43,15 @@
 		<table class="table-list">
 			<tbody>
 				<tr>
-					<td class="domestic-tour"><a href="/guonei">国内游<figure class="icons-domestic"></figure></a></td>
-					<td class="outbound-tour"><a href="/chujing">出境游<figure class="icons-outbound"></figure></a></td>
+					<td class="domestic-tour"><a href="http://taoly.cn/guonei">国内游<figure class="icons-domestic"></figure></a></td>
+					<td class="outbound-tour"><a href="http://taoly.cn/chujing">出境游<figure class="icons-outbound"></figure></a></td>
 				</tr>
 				<tr>
-					<td class="area-tour"><a href="/shanghai">周边游<figure class="icons-area"></figure></a></td>
-					<td class="tao-tao" rowspan="2"><a href="{{ tao_url }}">淘一淘</a></td>
+					<td class="area-tour"><a href="http://taoly.cn/shanghai">周边游<figure class="icons-area"></figure></a></td>
+					<td class="tao-tao" rowspan="2" id="taoyitao"><a href="http://taoly.cn{{ tao_url }}">淘一淘</a></td>
 				</tr>
 				<tr>
-					<td class="chun-qiu"><a href="/zhengpin">春秋正品<figure class="icons-chun"></figure></a></td>
+					<td class="chun-qiu"><a href="http://taoly.cn/zhengpin">春秋正品<figure class="icons-chun"></figure></a></td>
 				</tr>
 			</tbody>
 		</table>
@@ -73,5 +73,6 @@
         MZ.app.detailInit();
 	});
 	</script>
+    <script type="text/javascript" src="../../static/js/google_event.js"></script>
 </body>
 </html>

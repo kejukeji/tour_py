@@ -182,9 +182,9 @@ MZ.app = {
 		var contTemplete = '<div class="panel panel-default" style="margin-bottom:0;">\
             <div class="panel-heading">分享<a id="J-close" href="javascript:void(0);" class="close">关闭</a></div>\
                     <div class="list-group">\
-                     <a href="' + 'http://v.t.sina.com.cn/share/share.php?url=' + window.location.href + '&amp;title=智游折扣' + '" class="list-group-item"><i class="icon-weibo"></i>新浪微博</a>\
-                     <a href="' + 'http://v.t.qq.com/share/share.php?url=' + window.location.href + '&amp;title=智游折扣' + '" class="list-group-item"><i class="icon-qq-weibo"></i>腾讯微博</a>\
-                     <a href="' + 'http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=' + window.location.href + '&amp;title=智游折扣' + '" class="list-group-item"><i class="icon-qq-zone"></i>QQ空间</a>\
+                     <a href="' + 'http://v.t.sina.com.cn/share/share.php?url=' + window.location.href + '&amp;title=智游折扣' + '" class="list-group-item" id="share-xlweibo"><i class="icon-weibo"></i>新浪微博</a>\
+                     <a href="' + 'http://v.t.qq.com/share/share.php?url=' + window.location.href + '&amp;title=智游折扣' + '" class="list-group-item" id="share-txweibo"><i class="icon-qq-weibo"></i>腾讯微博</a>\
+                     <a href="' + 'http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=' + window.location.href + '&amp;title=智游折扣' + '" class="list-group-item" id="share-qqkongjian"><i class="icon-qq-zone"></i>QQ空间</a>\
             </div>\
 		</div>';
 		var shareBtn = $('#J-share');

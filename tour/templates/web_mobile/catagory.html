@@ -15,7 +15,7 @@
 	<header>
 		{{ title }}
         {# <a href="javascript:history.back();" class="icon-back"></a>#}
-        <a href="/" class="icon-home"></a>
+        <a href="http://taoly.cn/" class="icon-home"></a>
         <a class="icon-share" href="javascript:void(0)" id="J-share"></a>
 		<a href="#" class="icon-code"></a>
 	</header>
@@ -25,9 +25,9 @@
 			<div class="swipe-wrap">
                 {% for banner in banners %}
                     {% if banner.picture %}
-                        <div><a href="{{ url_for('detail', tour_id=banner.id.__str__()) }}?mp.weixin.qq.com"><img src="{{ banner.picture.picture640_288 }}" /></a></div>
+                        <div><a href="http://taoly.cn{{ url_for('detail', tour_id=banner.id.__str__()) }}?mp.weixin.qq.com"><img src="{{ banner.picture.picture640_288 }}" /></a></div>
                     {% else %}
-                        <div><a href="{{ url_for('detail', tour_id=banner.id.__str__()) }}?mp.weixin.qq.com"><img src="" /></a></div>
+                        <div><a href="http://taoly.cn{{ url_for('detail', tour_id=banner.id.__str__()) }}?mp.weixin.qq.com"><img src="" /></a></div>
                     {% endif %}
                 {% endfor %}
 			</div>
@@ -45,7 +45,7 @@
 		<ul class="index-list clearfix">
             {% for tour in tours %}
 			<li>
-				<a href="{{ url_for('detail', tour_id=tour.id.__str__()) }}?mp.weixin.qq.com">
+				<a href="http://taoly.cn{{ url_for('detail', tour_id=tour.id.__str__()) }}?mp.weixin.qq.com">
 					<i class="icon-new"></i>
                     {% if tour.picture %}
 					<div class="pic-wrap"><img src="{{ tour.picture.picture286_170 }}" height="85"/></div>
@@ -87,5 +87,6 @@
         MZ.app.detailInit();
 	});
 	</script>
+    <script type="text/javascript" src="../../static/js/google_event.js"></script>
 </body>
 </html>
