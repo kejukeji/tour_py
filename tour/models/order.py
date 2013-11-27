@@ -18,6 +18,10 @@ class Order(Base):
     email 邮件
     time 预订时间
     status 订单状态
+        0 新的订单
+        1 等待付款
+        2 订单成交
+        3 用户取消
     """
 
     __tablename__ = 'order'
@@ -27,7 +31,7 @@ class Order(Base):
     }
 
     id = Column(Integer, primary_key=True)
-    tour_id = Column(Integer, ForeignKey(Tour.id, ondelete='set null', onupdate='cascade'))
+    tour_id = Column(Integer, ForeignKey(Tour.id, ondelete='set null', onupdate='cascade'), nullable=True)
     tour = relationship(Tour)
     customer = Column(String(16), nullable=True, server_default=None)
     mobile = Column(String(16), nullable=False)

@@ -12,6 +12,7 @@ from models import db
 from views.admin_login import login_view, register_view, logout_view
 from flask.ext import restful
 from views.web_mobile import guonei, chujing, shanghai, zhengpin
+from views.order_tour import order_tour
 
 # 后台管理路径
 admin = Admin(name=u'旅游折扣会', index_view=HomeView())
@@ -38,3 +39,4 @@ app.add_url_rule('/guonei', 'guonei', guonei)
 app.add_url_rule('/chujing', 'chujing', chujing)
 app.add_url_rule('/shanghai', 'shanghai', shanghai)
 app.add_url_rule('/zhengpin', 'zhengpin', zhengpin)
+app.add_url_rule('/order/<int:tour_id>', 'order_tour', order_tour, methods=['GET', 'POST'])
