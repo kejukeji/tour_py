@@ -71,7 +71,7 @@ class Tour(Base):
         self.tour_type_id = kwargs.pop('tour_type_id', None)
 
     def __repr__(self):
-        return '<Tour(title: %s)>' % self.title
+        return '%s' % self.title
 
 
 class TourPicture(Base):
