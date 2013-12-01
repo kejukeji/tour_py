@@ -98,3 +98,6 @@ def random_url():
     length = query.count()
     tour_id = query.all()[random.randint(0, length-1)].id
     return url_for('detail', tour_id=tour_id)
+
+
+
