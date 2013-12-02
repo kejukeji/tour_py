@@ -1,8 +1,11 @@
 # coding: utf-8
+import time
+import datetime
 
-from sqlalchemy import Column, Integer, String, Float, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, Boolean, ForeignKey, DATETIME
 
 from .database import Base
+from ..utils.ex_time import todayfstr
 
 TOUR_TABLE = 'tour'
 TOUR_PICTURE_TABLE = 'tour_picture'
@@ -20,6 +23,11 @@ class Tour(Base):
     ordered 已订购人数
     rank 排序
     stopped 订购是否结束 0 没有 1 结束
+    time 上传的时间
+    sign 标签
+        None 无
+        1 留给新单
+        2 从这里开始
     """
 
     __tablename__ = TOUR_TABLE
@@ -42,6 +50,8 @@ class Tour(Base):
     tel = Column(String(16), nullable=False)
     tour_type_id = Column(Integer, nullable=True)
     user_id = Column(Integer, nullable=True)
+    time = Column(DATETIME, nullable=True)
+    sign = Column(Integer, nullable=True)
 
     def __init__(self, **kwargs):
         self.title = kwargs.pop('title')
@@ -56,6 +66,8 @@ class Tour(Base):
         self.tel = kwargs.pop('tel')
         self.tour_type_id = kwargs.pop('tour_type_id', None)
         self.user_id = kwargs.pop('user_id')
+        self.time = todayfstr()
+        self.sign = kwargs.pop('sign', None)
 
     def update(self, **kwargs):
         self.title = kwargs.pop('title')
@@ -69,6 +81,24 @@ class Tour(Base):
         self.discount = kwargs.pop('discount')
         self.tel = kwargs.pop('tel')
         self.tour_type_id = kwargs.pop('tour_type_id', None)
+        #self.time = kwargs.pop('time', None)
+        self.sign = kwargs.pop('sign', None)
+
+    def get_sign(self):
+        """返回标签 0 没有 1 新单 。。。"""
+        if self.time:
+
+            old = datetime.datetime.fromtimestamp(time.mktime(time.strptime(self.time, '%Y-%m-%d %H:%M:%S')))  # datetime
+            delta = datetime.timedelta(days=3)
+            if delta < (datetime.datetime.now() - old):
+                return 1
+
+        if self.sign:
+            return self.sign
+
+        return 0
+
+
 
     def __repr__(self):
         return '%s' % self.title

@@ -83,6 +83,12 @@ class TourView(ModelView):
     def scaffold_form(self):
         form_class = super(TourView, self).scaffold_form()
         form_class.picture = TextField(label=u'折扣图片', description=u'折扣图片，按control键可以选择多张图片')
+        try:
+            delattr(form_class, 'time')
+            delattr(form_class, 'sign')
+        except:
+            pass
+
         return form_class
 
     def create_model(self, form):
