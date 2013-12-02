@@ -13,12 +13,14 @@ from views.admin_login import login_view, register_view, logout_view
 from flask.ext import restful
 from views.web_mobile import guonei, chujing, shanghai, zhengpin
 from views.order_tour import order_tour
+from views.admin_order import OrderView
 
 # 后台管理路径
 admin = Admin(name=u'旅游折扣会', index_view=HomeView())
 admin.init_app(app)
 admin.add_view(TourView(db, name=u'折扣管理', category=u'折扣'))
 admin.add_view(UserView(db, name=u'用户管理'))
+admin.add_view(OrderView(db, name=u'预约购买'))
 
 # 后台获取相关ajax文件的路径
 api = restful.Api(app)

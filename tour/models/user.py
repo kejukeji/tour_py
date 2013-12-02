@@ -102,7 +102,7 @@ class User(Base):
         return check_password(password, self.password)
 
     @staticmethod
-    def is_authenticated():  # todo-lyw 静态method是如何用的，和类方法的不同
+    def is_authenticated():
         return True
 
     @staticmethod
