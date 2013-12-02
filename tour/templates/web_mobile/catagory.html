@@ -46,7 +46,10 @@
             {% for tour in tours %}
 			<li>
 				<a href="http://taoly.cn{{ url_for('detail', tour_id=tour.id.__str__()) }}?mp.weixin.qq.com">
-					<i class="icon-new"></i>
+					{% if tour.get_sign() == 1 %}
+                    <i class="icon-new"></i>
+                    {% elif tour.get_sign() == 0 %}
+                    {% endif %}
                     {% if tour.picture %}
 					<div class="pic-wrap"><img src="{{ tour.picture.picture286_170 }}" height="85"/></div>
                     {% else %}

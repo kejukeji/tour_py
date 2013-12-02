@@ -88,9 +88,8 @@ class Tour(Base):
         """返回标签 0 没有 1 新单 。。。"""
         if self.time:
 
-            old = datetime.datetime.fromtimestamp(time.mktime(time.strptime(self.time, '%Y-%m-%d %H:%M:%S')))  # datetime
             delta = datetime.timedelta(days=3)
-            if delta < (datetime.datetime.now() - old):
+            if delta > (datetime.datetime.now() - self.time):
                 return 1
 
         if self.sign:

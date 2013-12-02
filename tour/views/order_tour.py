@@ -23,7 +23,7 @@ def order_tour(tour_id):
         tour = wrap_picture(Tour.query.filter(Tour.id == tour_id).first())
         relates = random_select(Tour.query.filter(Tour.stopped == 0).filter(
         Tour.tour_type_id == tour.tour_type_id).order_by(desc(Tour.rank)).all(), 3)
-        if request.form.get('mobile', None) is None:
+        if not request.form.get('mobile', None):
             message = u'订单提交失败了，手机号必填哦。'
             return render_template('web_mobile/detail.html',
                            message=message,
