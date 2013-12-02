@@ -10,6 +10,15 @@
 <title>{{ tour.title }}</title>
 <link rel="stylesheet" href="../../static/css/m.min.css" type="text/css">
 <script type="text/javascript" src="../../static/js/google_analysis.js"></script>
+<style type=text/css>
+    .btn.btn-xs {
+      font-size: 10px;
+      padding: 4px 10px;
+    }
+    .reddiv {
+        color: red;
+    }
+</style>
 </head>
 <body>
 	<header>
@@ -36,15 +45,22 @@
                     {% else %}
                     <p class="deal-price-num">折扣价：<em>{{ tour.price.__int__() }}</em>元起/人</p>
                     {% endif %}
+
+                    <a href="/order/{{ tour.id.__int__() }}" class="btn btn-xs btn-oran" id="online">在线预订</a>
                     {% if tour.tel %}
-					<a href="tel:{{ tour.tel }}" class="btn btn-large btn-oran" id="phone">电话预订</a>
+					<a href="tel:{{ tour.tel }}" class="btn btn-xs btn-oran" id="phone">电话预订</a>
                     {% else %}
-                    <a href="javascript:void(0)" class="btn btn-large btn-gray" id="phone">电话预订</a>
+                    <a href="javascript:void(0)" class="btn btn-xs btn-gray" id="phone">电话预订</a>
                     {% endif %}
 					<!-- <a href="#" class="btn btn-large btn-gray">已售罄</a> -->
 				</div>
-			</div>
+
 		</div>
+        {% if message %}
+                <div class="reddiv">
+                    {{ message }}
+                </div>
+                {% endif %}
 		<div class="panel panel-default">
 			<div class="panel-heading">折扣简介</div>
 		        	<div class="panel-body">

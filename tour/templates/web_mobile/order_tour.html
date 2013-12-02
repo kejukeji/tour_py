@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta name="format-detection" content="email=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<title>淘旅游 - 在线订购</title>
+<link rel="stylesheet" href="../../static/css/m.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.2/css/bootstrap.min.css">
+<script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../static/js/google_analysis.js"></script>
+</head>
+<style type="text/css">
+    .deal-stat {
+      position: relative;
+      padding-left: 10px;
+    }
+    .redp {
+        color: red;
+    }
+    .deal-stat .deal-stat-cont1 {
+      min-height: 20px;
+      margin-bottom: 20px;
+    }
+    .deal-stat .deal-stat-cont1 .deal-price-num1 {
+      line-height: 24px;
+      font-size: 1em;
+      margin-bottom: 3px;
+    }
+    .deal-stat .deal-stat-cont1 .deal-price-num1 em {
+      color: #ea5f23;
+      font-weight: bold;
+    }
+
+</style>
+<body>
+	<header>
+		淘旅游 - 在线订购
+        <a href="http://taoly.cn/" class="icon-home"></a>
+		<a class="icon-share" href="javascript:void(0)" id="J-share"></a>
+	</header>
+
+	<section>
+		<div class="banner">
+            {% if tour.picture %}
+				<img src={{ tour.picture[0].picture300_180 }} />
+                {% else %}
+                <img src="" />
+            {% endif %}
+		</div>
+		<div class="panel panel-default">
+		        	<div class="panel-body">
+                        <div class=".deal-intro"><h3>{{ tour.title }}</h3></div>
+                        <div class="deal-stat">
+                        <div class="deal-stat-cont1">
+                            <p class="deal-price-num1">市场价：<em style="text-decoration: line-through; color: gray;">{{ tour.price.__int__() }}</em>元起/人</p>
+                            {% if tour.discount %}
+                            <p class="deal-price-num1">折扣价：<em>{{ tour.discount.__int__() }}</em>元起/人</p>
+                            {% else %}
+                            <p class="deal-price-num1">折扣价：<em>{{ tour.price.__int__() }}</em>元起/人</p>
+                            {% endif %}
+                        </div>
+                        </div>
+		        	</div>
+            <hr>
+            <div>
+                <form role = "form" action='/order/{{ tour.id }}' method="POST">
+                                    <div class="panel-body">
+                                        <div class="row form-group">
+                                          <div class="col-xs-4" align="right"><p class="panel-p" style="text-indent: 0;">您的姓名&nbsp;</p></div>
+                                          <div class="col-xs-8"><input name="customer" class="form-control" id="customer" ></div>
+                                        </div>
+                                        <div class="row form-group">
+                                          <div class="col-xs-4" align="right"><p class="panel-p" style="text-indent: 0;">您的手机*</p></div>
+                                          <div class="col-xs-8"><input name="mobile" class="form-control" id="mobile" ></div>
+                                        </div>
+                                        <div class="row form-group">
+                                          <div class="col-xs-4" align="right"><p class="panel-p" style="text-indent: 0;">您的邮箱&nbsp;</p></div>
+                                          <div class="col-xs-8"><input name="email" class="form-control" id="email" ></div>
+                                        </div>
+                                        <p class="panel-p" style="text-indent: 0;">我们会尽快和您联系，确认订单事宜</p>
+                                    </div>
+                                    <button type="submit" class="btn btn-oran btn-lg btn-block">提交订单</button>
+
+                </form>
+            </div>
+		</div>
+
+
+
+
+
+
+		<footer class="index-footer">
+			<p>© 2013 淘旅游</p>
+			<p>沪ICP备13009295号</p>
+		</footer>
+	</section>
+
+	<script type="text/javascript" src="../../static/js/zepto.min.js"></script>
+	<script type="text/javascript" src="../../static/js/notification.js"></script>
+	<script type="text/javascript" src="../../static/js/base.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		MZ.app.detailInit();
+	});
+	</script>
+    <script type="text/javascript" src="../../static/js/google_event.js"></script>
+</body>
+</html>
